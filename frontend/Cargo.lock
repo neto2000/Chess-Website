@@ -64,6 +64,8 @@ dependencies = [
 name = "frontend"
 version = "0.1.0"
 dependencies = [
+ "gloo-net",
+ "serde",
  "yew",
 ]
 

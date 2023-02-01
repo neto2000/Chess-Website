@@ -7,7 +7,7 @@
   
   ### Frontend
 
-   - [ ] implement yew
+   - [x] implement yew
 
    - [ ] simple forwarding to diffrent route on button click
 
