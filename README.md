@@ -7,27 +7,27 @@
   
   ### Frontend
 
-    - [ ] implement yew
+   - [ ] implement yew
 
-    - [ ] simple forwarding to diffrent route on button click
+   - [ ] simple forwarding to diffrent route on button click
 
-    - [ ] design chess board in html/css
+   - [ ] design chess board in html/css
 
-    - [ ] diffrent figures
-    - [ ] placing of the the diffrent figures
+   - [ ] diffrent figures
+   - [ ] placing of the the diffrent figures
 
-    - [ ] highlight the possible paths of the figure
+   - [ ] highlight the possible paths of the figure
 
-    - [ ] movement of the figures
+   - [ ] movement of the figures
 
   ### Backend
 
-    - [ ] implement axum
+   - [ ] implement axum
 
-    - [ ] websockets
+   - [ ] websockets
 
-    - [ ] get move of the first client (vice versa)
-    - [ ] send move to the second client (vice versa)
+   - [ ] get move of the first client (vice versa)
+   - [ ] send move to the second client (vice versa)
 
 
 
