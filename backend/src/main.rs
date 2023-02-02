@@ -7,7 +7,7 @@ use axum::{
 
 
 use std::net::SocketAddr;
-use tower_http::services::ServeFile;
+use tower_http::services::{ServeDir, ServeFile};
 
 use serde::{Deserialize, Serialize};
 use serde_json::{json};
@@ -18,14 +18,15 @@ use std::{io};
 async fn main()
 {
     let app = Router::new()
-    .route("/api", get(handler))
-    .route("/", get_service(ServeFile::new("static/index.html"))
+    .nest_service("/", get_service(ServeDir::new("static"))
         .handle_error(|error: io::Error| async move { 
         ( 
         StatusCode::INTERNAL_SERVER_ERROR, 
         format!("Unhandled internal error: {}", error),
         )
-    }));
+    }))
+
+    .route("/api", get(handler));
 
 
 

@@ -1,10 +1,6 @@
-document.getElementById("test-button").onclick = Click
-
-
-
-function Click()
+async function Click()
 {
-    let data = Get_Checklist_Data();
+    let data = await Get_Checklist_Data();
 
     console.log(data);
 }
@@ -21,3 +17,7 @@ async function Get_Checklist_Data()
 
     return data
 }
+
+window.onload = function(){ 
+    document.getElementById("test-button").onclick = Click
+};
