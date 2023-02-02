@@ -1,4 +1,53 @@
-.hi
+
+
+.board-container
 {
-    color: blue;
+    width: 45%;
+   
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.chess-board
+{
+    display: grid;
+    
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+
+}
+
+
+.square-even
+{
+
+
+    aspect-ratio: 1 / 1;
+
+    z-index: 0;
+
+    background-color: blueviolet;
+}
+.square-odd
+{
+
+    aspect-ratio: 1 / 1;
+    
+    z-index: 0;
+
+    background-color: lightgray;
+}
+
+.but
+{
+    width: 200px;
+    height: 200px;
+
+    background-color: rgba(0, 0, 0, 0);
+
+    border: none;
 }
