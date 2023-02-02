@@ -3,11 +3,9 @@
  ## To-Dos
 
   - [x] choose backend framework in Rust (axum)
-  - [x] choose frontend framework (yew)
+  - [x] choose frontend framework (JavaScript)
   
   ### Frontend
-
-   - [x] implement yew
 
    - [ ] simple forwarding to diffrent route on button click
 
