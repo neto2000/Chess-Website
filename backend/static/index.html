@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+
+    <!-- <script src="main.js" async></script> -->
+
+    <script async>
+        
+
+
+
+        async function Click()
+        {
+            let data = await Get_Checklist_Data();
+
+            console.log(data);
+        }
+
+
+        async function Get_Checklist_Data()
+        {
+
+            const response = await fetch("http://127.0.0.1:9000/api", {
+                method: "get"
+            })
+
+            const data = await response.json()
+
+            return data
+        }
+
+        window.onload = function(){ 
+            document.getElementById("test-button").onclick = Click
+        };
+    </script>
+</head>
+<body>
+    <h1>
+        Hello World!
+    </h1>
+
+    <button id="test-button">Click me!</button>
+</body>
+</html>
