@@ -7,9 +7,9 @@
   
   ### Frontend
 
-   - [ ] simple forwarding to diffrent route on button click
+   - [x] simple forwarding to diffrent route on button click
 
-   - [ ] design chess board in html/css
+   - [x] design chess board in html/css
 
    - [ ] diffrent figures
    - [ ] placing of the the diffrent figures
