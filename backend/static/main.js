@@ -47,6 +47,24 @@ function CreateChessBoard()
     }
 }
 
+function Place_Figure(image, position)
+{
+    let field = document.getElementById("field" + position);
+
+    let figure = document.createElement("button");
+
+    figure.className = "but";
+
+
+    let image_element = document.createElement("img");
+    image_element.className = "figure-image";
+    image_element.setAttribute('src', image);
+
+    figure.appendChild(image_element);
+
+    field.appendChild(figure);
+}
+
 
 
 async function Click()
@@ -57,6 +75,8 @@ async function Click()
 }
 
 
+
+//simple GET request
 async function Get_Checklist_Data()
 {
 
@@ -73,4 +93,7 @@ window.onload = function(){
     // document.getElementById("test-button").onclick = Click
 
     CreateChessBoard();
+
+    Place_Figure("./images/Bauer.svg", 3);
+    Place_Figure("./images/Bauer.svg", 20);
 };
