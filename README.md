@@ -11,8 +11,9 @@
 
    - [x] design chess board in html/css
 
-   - [ ] diffrent figures
    - [x] placing of the diffrent figures
+   - [ ] diffrent figures
+   - [ ] create dict where all images and possible movments of the figures is saved
 
    - [ ] highlight the possible paths of the figure
 
