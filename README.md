@@ -12,7 +12,7 @@
    - [x] design chess board in html/css
 
    - [ ] diffrent figures
-   - [ ] placing of the the diffrent figures
+   - [x] placing of the diffrent figures
 
    - [ ] highlight the possible paths of the figure
 
