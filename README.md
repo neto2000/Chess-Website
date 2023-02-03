@@ -12,12 +12,13 @@
    - [x] design chess board in html/css
 
    - [x] placing of the diffrent figures
+   - [x] create dict where all images and possible movments of the figures is saved
    - [ ] diffrent figures
-   - [ ] create dict where all images and possible movments of the figures is saved
 
-   - [ ] highlight the possible paths of the figure
+   - [x] highlight the possible paths of the figure
 
    - [ ] movement of the figures
+   - [ ] special movements of figures (knight, pawn(start: 2 instead of 1))
 
   ### Backend
 
