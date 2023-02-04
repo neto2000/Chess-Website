@@ -3,9 +3,11 @@
  ## To-Dos
 
   - [x] choose backend framework in Rust (axum)
-  - [x] choose frontend framework (JavaScript)
+  - [x] choose frontend framework (JavaScript + React)
   
   ### Frontend
+
+   - [ ] transfer existing JS into React
 
    - [x] simple forwarding to diffrent route on button click
 
