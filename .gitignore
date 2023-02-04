@@ -1,3 +1,2 @@
 backend/target/
-frontend/target/
-frontend/dist/
+react-frontend/node_modules
