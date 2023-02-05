@@ -11,15 +11,17 @@ let new_content = []
 
 function App() {
 
+
+	// create content State with empty HTML tag
 	for(let j = 1; j <= 64; j++)
 	{
-		new_content.push({id: j,html:(<></>)})
+		new_content.push({id: j,html:[<></>]})
 	}
 
 	const [content, setContent] = useState(new_content);
 
 
-
+	// create chess board 8x8
 	let chess_board = []
 
 	let counter = 0;
@@ -62,21 +64,35 @@ function App() {
 
 	function PlaceFigure(field_pos)
 	{
-
 		const new_content = [...content]
 
 		const new_html = new_content.find(item => item.id === field_pos)
 
-		new_html.html = (
+		new_html.html = [
 		<button className='figure-button'>
 			<img className='figure-image' src='/images/Bauer.svg'></img>
 		</button>
-		);
+
+		];
 
 		setContent(new_content);
-	
 	}
 
+	
+	function PlaceHighlight(field_pos)
+	{
+		const new_content = [...content]
+
+		const new_html = new_content.find(item => item.id === field_pos)
+
+
+		new_html.html.push(
+		<button className='highlight-button'>
+			<img className='highlight-image' src='/images/highlight.svg'></img>
+		</button>);
+
+		setContent(new_content);
+	}
 
 
 	return (
