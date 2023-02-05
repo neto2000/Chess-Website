@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import "./App.css"
 
@@ -62,36 +62,63 @@ function App() {
 
 	
 
-	function PlaceFigure(field_pos)
+	function PlaceFigure(field_pos, type)
 	{
 		const new_content = [...content]
 
 		const new_html = new_content.find(item => item.id === field_pos)
 
 		new_html.html = [
-		<button className='figure-button'>
+		<button className='figure-button' onClick={PlaceHighlights.bind(this, field_pos, type)}>
 			<img className='figure-image' src='/images/Bauer.svg'></img>
 		</button>
 
 		];
 
 		setContent(new_content);
+
 	}
 
 	
-	function PlaceHighlight(field_pos)
+	function PlaceHighlights(old_pos, type)
 	{
+
+		// Place all Highlights with the specifications of the type
+
 		const new_content = [...content]
 
-		const new_html = new_content.find(item => item.id === field_pos)
+		const new_html = new_content.find(item => item.id === 5)
 
 
-		new_html.html.push(
-		<button className='highlight-button'>
-			<img className='highlight-image' src='/images/highlight.svg'></img>
-		</button>);
+		// check if a figure is on the field
+		if (new_html.html[0].type == "button")
+		{
+			new_html.html = [
+				<button className='figure-button' onClick={MoveToField.bind(this, old_pos, 5, type)}>
+					
+					<img className='highlight-image' src='/images/highlight.svg'></img>
+					
+					<img className='figure-image' src='/images/Bauer.svg'></img>
+				</button>
+		
+			];
+		}
+		else
+		{
+
+			new_html.html.push(
+			<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, 4, type)}>
+				<img className='highlight-image' src='/images/highlight.svg'></img>
+			</button>);
+		}
+
 
 		setContent(new_content);
+	}
+
+	function MoveToField(old_pos, field_pos, type)
+	{
+		console.log("Move")
 	}
 
 
