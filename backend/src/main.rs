@@ -18,7 +18,14 @@ use std::{io};
 async fn main()
 {
     let app = Router::new()
-    .nest_service("/", get_service(ServeDir::new("static"))
+    .nest_service("/", get_service(ServeDir::new("static/frontend"))
+        .handle_error(|error: io::Error| async move { 
+        ( 
+        StatusCode::INTERNAL_SERVER_ERROR, 
+        format!("Unhandled internal error: {}", error),
+        )
+    }))
+    .nest_service("/images", get_service(ServeDir::new("static/images"))
         .handle_error(|error: io::Error| async move { 
         ( 
         StatusCode::INTERNAL_SERVER_ERROR, 
