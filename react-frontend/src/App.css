@@ -28,7 +28,7 @@
 
     z-index: 0;
 
-    background-color: blueviolet;
+    background-color: rgb(117, 57, 0);
 }
 .square-odd
 {
@@ -37,7 +37,7 @@
     
     z-index: 0;
 
-    background-color: lightgray;
+    background-color: rgb(255, 196, 129);
 }
 
 .figure-image
