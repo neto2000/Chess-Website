@@ -7,7 +7,7 @@
   
   ### Frontend
 
-   - [ ] transfer existing JS into React
+   - [x] transfer existing JS into React
 
    - [x] simple forwarding to diffrent route on button click
 
