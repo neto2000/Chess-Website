@@ -100,7 +100,9 @@ function App() {
 		
         let this_figure_dict = figure_dict[type]
 		
-        let auto_fill = figure_dict["auto-fill"];
+        let auto_fill = this_figure_dict["auto-fill"];
+
+		console.log(auto_fill)
 		
         // spawn the highlight of all possible moves
         for (let key in this_figure_dict)
@@ -109,7 +111,103 @@ function App() {
             {
                 if(auto_fill)
                 {
+					if (this_figure_dict[key] != 0)
+                    {
 
+						for(let i = 1; i <= this_figure_dict[key]; i++)
+						{
+							const current_highlight_pos = i * calc_dict[key] + old_pos;
+
+							// test if highlight is out of border
+							if(current_highlight_pos < 1 || current_highlight_pos > 64)
+							{
+								continue
+							}
+
+							// check that there is no row overflow by east and west direction
+							if(key == "e" || key == "w")
+							{
+
+								// MAth.floor rundet immer ab!
+								if(Math.floor(old_pos / 8) != Math.floor(current_highlight_pos / 8))
+								{
+									if(current_highlight_pos % 8 != 0)
+									{
+										continue
+									}
+								}
+								else
+								{
+									if(current_highlight_pos % 8 == 0)
+									{
+										continue
+									}
+								}
+							}
+
+							if(key == "ne" || key == "se" || key == "sw" || key == "nw")
+							{
+								console.log(current_highlight_pos % 8)
+
+								if(current_highlight_pos % 8 == 0 ||current_highlight_pos % 8 == 1)
+								{
+									const new_html = new_content.find(item => item.id === current_highlight_pos)
+
+
+									// check if a figure is on the field
+									if (new_html.html[0].type == "button")
+									{
+										new_html.html = [
+											<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+												
+												<img className='highlight-image' src='/images/highlight.svg'></img>
+												
+												<img className='figure-image' src='/images/Bauer.svg'></img>
+											</button>
+									
+										];
+									}
+									else
+									{
+
+										new_html.html.push(
+										<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+											<img className='highlight-image' src='/images/highlight.svg'></img>
+										</button>);
+									}
+
+
+									break
+								}
+							}
+
+
+							const new_html = new_content.find(item => item.id === current_highlight_pos)
+
+
+							// check if a figure is on the field
+							if (new_html.html[0].type == "button")
+							{
+								new_html.html = [
+									<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+										
+										<img className='highlight-image' src='/images/highlight.svg'></img>
+										
+										<img className='figure-image' src='/images/Bauer.svg'></img>
+									</button>
+							
+								];
+							}
+							else
+							{
+
+								new_html.html.push(
+								<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+									<img className='highlight-image' src='/images/highlight.svg'></img>
+								</button>);
+							}
+						}
+					}
                 }
                 else
                 {
@@ -118,6 +216,11 @@ function App() {
                     {
 						
 						const current_highlight_pos = this_figure_dict[key] * calc_dict[key] + old_pos;
+
+						if(current_highlight_pos < 1 || current_highlight_pos > 64)
+						{
+							continue
+						}
 
                         console.log(current_highlight_pos);
 
@@ -183,7 +286,7 @@ function App() {
 				</div>
 
 			</div>
-			<button onClick={PlaceFigure.bind(this, 10, "pawn")}>Place</button>
+			<button onClick={PlaceFigure.bind(this, 28, "bishop")}>Place</button>
 		</div>
 	)
 }
