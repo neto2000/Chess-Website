@@ -22,7 +22,7 @@ function App() {
 	// create content State with empty HTML tag
 	for(let j = 1; j <= 64; j++)
 	{
-		new_content.push({id: j,html:[<></>]})
+		new_content.push({id: j,html:[<></>], type: "none", is_highlight: false})
 	}
 
 	const [content, setContent] = useState(new_content);
@@ -76,21 +76,23 @@ function App() {
 		const new_html = new_content.find(item => item.id === field_pos)
 
 		new_html.html = [
-		<button className='figure-button' onClick={PlaceHighlights.bind(this, field_pos, type)}>
+		<button className='figure-button' onClick={PlaceHighlights.bind(this, field_pos)}>
 			<img className='figure-image' src='/images/Bauer.svg'></img>
 		</button>
 
 		];
+
+		new_html.type = type
+
+		console.log(new_html.type)
 
 		setContent(new_content);
 
 	}
 
 	
-	function PlaceHighlights(old_pos, type)
+	function PlaceHighlights(old_pos)
 	{
-
-		console.log(figure_dict)
 
 		// Place all Highlights with the specifications of the type
 		const new_content = [...content]
@@ -98,7 +100,7 @@ function App() {
 		const calc_dict = {"n": -8, "ne": -7, "e": 1, "se": 9, "s": 8, "sw": 7, "w": -1, "nw": -9}
 
 		
-        let this_figure_dict = figure_dict[type]
+        let this_figure_dict = figure_dict[content[old_pos - 1].type]
 		
         let auto_fill = this_figure_dict["auto-fill"];
 
@@ -136,12 +138,9 @@ function App() {
 										continue
 									}
 								}
-								else
+								else if(current_highlight_pos % 8 == 0)
 								{
-									if(current_highlight_pos % 8 == 0)
-									{
-										continue
-									}
+									continue
 								}
 							}
 
@@ -158,7 +157,7 @@ function App() {
 									if (new_html.html[0].type == "button")
 									{
 										new_html.html = [
-											<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+											<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
 												
 												<img className='highlight-image' src='/images/highlight.svg'></img>
 												
@@ -171,10 +170,12 @@ function App() {
 									{
 
 										new_html.html.push(
-										<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+										<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
 											<img className='highlight-image' src='/images/highlight.svg'></img>
 										</button>);
 									}
+
+									new_html.is_highlight = true;
 
 
 									break
@@ -189,7 +190,7 @@ function App() {
 							if (new_html.html[0].type == "button")
 							{
 								new_html.html = [
-									<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+									<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
 										
 										<img className='highlight-image' src='/images/highlight.svg'></img>
 										
@@ -202,10 +203,12 @@ function App() {
 							{
 
 								new_html.html.push(
-								<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+								<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
 									<img className='highlight-image' src='/images/highlight.svg'></img>
 								</button>);
 							}
+
+							new_html.is_highlight = true;
 						}
 					}
                 }
@@ -222,8 +225,6 @@ function App() {
 							continue
 						}
 
-                        console.log(current_highlight_pos);
-
                         const new_html = new_content.find(item => item.id === current_highlight_pos)
 
 
@@ -231,7 +232,7 @@ function App() {
 						if (new_html.html[0].type == "button")
 						{
 							new_html.html = [
-								<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+								<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
 									
 									<img className='highlight-image' src='/images/highlight.svg'></img>
 									
@@ -244,26 +245,70 @@ function App() {
 						{
 
 							new_html.html.push(
-							<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos, type)}>
+							<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
 								<img className='highlight-image' src='/images/highlight.svg'></img>
 							</button>);
 						}
+
+						new_html.is_highlight = true;
                     }
 
                 }
             }
         }
 
-
-		
-
-
 		setContent(new_content);
 	}
 
-	function MoveToField(old_pos, field_pos, type)
+	function MoveToField(old_pos, new_pos)
 	{
 		console.log("Move")
+
+		for(let i = 1; i <= 64; i++)
+		{
+
+			// remove all path highlights
+			if (content[i - 1].is_highlight)
+			{
+				const new_content = [...content]
+
+				const new_html = new_content.find(item => item.id === i)
+
+				if(new_html.type == "none")
+				{
+					new_html.html = [<></>]
+				}
+				else
+				{
+					new_html.html = [
+						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_pos)}>
+							<img className='figure-image' src='/images/Bauer.svg'></img>
+						</button>				
+					];
+				}
+				setContent(new_content);
+			}		
+		}
+
+		const new_content = [...content]
+
+		const new_html = new_content.find(item => item.id === new_pos)
+		
+		new_html.html = [
+			<button className='figure-button' onClick={PlaceHighlights.bind(this, new_pos)}>
+				<img className='figure-image' src='/images/Bauer.svg'></img>
+			</button>				
+		];
+
+		new_html.type = content[old_pos - 1].type;
+
+		const old_html = new_content.find(item => item.id === old_pos)
+
+		old_html.html = [<></>];
+
+		old_html.type = "none";
+
+		setContent(new_content);
 
 	}
 
@@ -286,7 +331,7 @@ function App() {
 				</div>
 
 			</div>
-			<button onClick={PlaceFigure.bind(this, 28, "bishop")}>Place</button>
+			<button onClick={PlaceFigure.bind(this, 28, "rook")}>Place</button>
 		</div>
 	)
 }
