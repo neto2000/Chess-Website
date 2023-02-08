@@ -21,7 +21,9 @@
 
    - [x] highlight the possible paths of the figure
 
-   - [ ] movement of the figures
+   - [x] movement of the figures
+    - [ ] Bug: wenn auto-fill Figuren an den rechten Rand gehen kommt eine neue Rheie
+    - [ ] Bug: wenn man 2 Figuren placed wird immer nur bei einer diew Highlights plaziert egal auf welche man klickt
    - [ ] special movements of figures (knight, pawn(start: 2 instead of 1))
 
   ### Backend
