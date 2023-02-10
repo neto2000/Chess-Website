@@ -96,7 +96,7 @@ function App() {
 	function PlaceHighlights(old_pos)
 	{
 		// activefigure: the figure from where the last highlights were spawned
-		// so the will not be spawned twice!
+		// so the will highlights not be spawned twice!
 		if (active_figure == old_pos)
 		{
 			console.log("again")
@@ -138,17 +138,29 @@ function App() {
 								// check that there is no row overflow by east and west direction
 								if(key == "e" || key == "w")
 								{
+									console.log("west")
 	
 									// MAth.floor rundet immer ab!
 									if(Math.floor(old_pos / 8) != Math.floor(current_highlight_pos / 8))
 									{
-										if(current_highlight_pos % 8 != 0)
+										if(old_pos % 8 == 0 && current_highlight_pos < old_pos && current_highlight_pos % 8 != 0)
+										{
+											console.log("allowed")
+										}
+										else if(current_highlight_pos % 8 != 0)
+										{
+											console.log("denied")
+											continue
+										}
+										else if(old_pos % 8 == 0 && current_highlight_pos % 8 == 0)
 										{
 											continue
 										}
+										
 									}
-									else if(current_highlight_pos % 8 == 0)
+									else if(current_highlight_pos % 8 == 0 || old_pos % 8 == 0)
 									{
+										console.log("denied")
 										continue
 									}
 								}
