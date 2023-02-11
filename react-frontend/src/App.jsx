@@ -93,11 +93,13 @@ function App() {
 	}
 
 	
-	function PlaceHighlights(old_pos)
+	function PlaceHighlights(figure_pos)
 	{
+		console.log(figure_pos)
+
 		// activefigure: the figure from where the last highlights were spawned
 		// so the will highlights not be spawned twice!
-		if (active_figure == old_pos)
+		if (active_figure == figure_pos)
 		{
 			console.log("again")
 		}
@@ -109,7 +111,7 @@ function App() {
 			const calc_dict = {"n": -8, "ne": -7, "e": 1, "se": 9, "s": 8, "sw": 7, "w": -1, "nw": -9}
 	
 			
-			let this_figure_dict = figure_dict[content[old_pos - 1].type]
+			let this_figure_dict = figure_dict[content[figure_pos - 1].type]
 			
 			let auto_fill = this_figure_dict["auto-fill"];
 	
@@ -127,7 +129,7 @@ function App() {
 	
 							for(let i = 1; i <= this_figure_dict[key]; i++)
 							{
-								const current_highlight_pos = i * calc_dict[key] + old_pos;
+								const current_highlight_pos = i * calc_dict[key] + figure_pos;
 	
 								// test if highlight is out of border
 								if(current_highlight_pos < 1 || current_highlight_pos > 64)
@@ -138,36 +140,32 @@ function App() {
 								// check that there is no row overflow by east and west direction
 								if(key == "e" || key == "w")
 								{
-									console.log("west")
 	
 									// MAth.floor rundet immer ab!
-									if(Math.floor(old_pos / 8) != Math.floor(current_highlight_pos / 8))
+									if(Math.floor(figure_pos / 8) != Math.floor(current_highlight_pos / 8))
 									{
-										if(old_pos % 8 == 0 && current_highlight_pos < old_pos && current_highlight_pos % 8 != 0)
+										if(figure_pos % 8 == 0 && current_highlight_pos < figure_pos && current_highlight_pos % 8 != 0)
 										{
-											console.log("allowed")
+											
 										}
 										else if(current_highlight_pos % 8 != 0)
 										{
-											console.log("denied")
 											continue
 										}
-										else if(old_pos % 8 == 0 && current_highlight_pos % 8 == 0)
+										else if(figure_pos % 8 == 0 && current_highlight_pos % 8 == 0)
 										{
 											continue
 										}
 										
 									}
-									else if(current_highlight_pos % 8 == 0 || old_pos % 8 == 0)
+									else if(current_highlight_pos % 8 == 0 || figure_pos % 8 == 0)
 									{
-										console.log("denied")
 										continue
 									}
 								}
 	
 								if(key == "ne" || key == "se" || key == "sw" || key == "nw")
 								{
-									console.log(current_highlight_pos % 8)
 	
 									if(current_highlight_pos % 8 == 0 ||current_highlight_pos % 8 == 1)
 									{
@@ -178,7 +176,7 @@ function App() {
 										if (new_html.html[0].type == "button")
 										{
 											new_html.html = [
-												<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
+												<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 													
 													<img className='highlight-image' src='/images/highlight.svg'></img>
 													
@@ -191,7 +189,7 @@ function App() {
 										{
 	
 											new_html.html.push(
-											<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
+											<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 												<img className='highlight-image' src='/images/highlight.svg'></img>
 											</button>);
 										}
@@ -211,7 +209,7 @@ function App() {
 								if (new_html.html[0].type == "button")
 								{
 									new_html.html = [
-										<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
+										<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 											
 											<img className='highlight-image' src='/images/highlight.svg'></img>
 											
@@ -222,10 +220,8 @@ function App() {
 								}
 								else
 								{
-									console.log("one time")
-	
 									new_html.html.push(
-									<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
+									<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 										<img className='highlight-image' src='/images/highlight.svg'></img>
 									</button>);
 								}
@@ -240,7 +236,7 @@ function App() {
 						if (this_figure_dict[key] != 0)
 						{
 							
-							const current_highlight_pos = this_figure_dict[key] * calc_dict[key] + old_pos;
+							const current_highlight_pos = this_figure_dict[key] * calc_dict[key] + figure_pos;
 	
 							if(current_highlight_pos < 1 || current_highlight_pos > 64)
 							{
@@ -254,7 +250,7 @@ function App() {
 							if (new_html.html[0].type == "button")
 							{
 								new_html.html = [
-									<button className='figure-button' onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
+									<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 										
 										<img className='highlight-image' src='/images/highlight.svg'></img>
 										
@@ -267,7 +263,7 @@ function App() {
 							{
 	
 								new_html.html.push(
-								<button className='highlight-button'  onClick={MoveToField.bind(this, old_pos, current_highlight_pos)}>
+								<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 									<img className='highlight-image' src='/images/highlight.svg'></img>
 								</button>);
 							}
@@ -284,7 +280,7 @@ function App() {
 
 		setContent(new_content);
 
-		active_figure = old_pos;
+		active_figure = figure_pos;
 	}
 
 	function MoveToField(old_pos, new_pos)
@@ -308,7 +304,7 @@ function App() {
 				else
 				{
 					new_html.html = [
-						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_pos)}>
+						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html.id)}>
 							<img className='figure-image' src='/images/Bauer.svg'></img>
 						</button>				
 					];
@@ -339,6 +335,12 @@ function App() {
 
 	}
 
+	function TestPlace()
+	{
+		PlaceFigure(28, "rook");
+		PlaceFigure(45, "rook")
+	}
+
 	async function Get_Figure_Dict()
 	{
 		const promise = await fetch("/dict", {
@@ -358,7 +360,7 @@ function App() {
 				</div>
 
 			</div>
-			<button onClick={PlaceFigure.bind(this, 28, "rook")}>Place</button>
+			<button onClick={TestPlace}>Place</button>
 		</div>
 	)
 }
