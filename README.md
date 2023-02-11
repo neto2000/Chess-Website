@@ -25,6 +25,7 @@
    - [x] Bug: wenn auto-fill Figuren an den rechten Rand gehen kommt eine neue Rheie
    - [x] Bug: wenn man 2 Figuren placed wird immer nur bei einer diew Highlights plaziert egal auf welche man klickt
    - [x] Bug: wenn man ein 2. Mal auf die Figur klickt werden somit neue Highlights erstellt, somit entstehen neue Schach Felder
+   - [ ] Bug: bei läufern am rechten Rand gehen zwei Highlights über die border in die nächste Reihe
    - [ ] special movements of figures (knight, pawn(start: 2 instead of 1))
 
   ### Backend

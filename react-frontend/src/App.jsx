@@ -338,7 +338,7 @@ function App() {
 	function TestPlace()
 	{
 		PlaceFigure(28, "rook");
-		PlaceFigure(45, "rook")
+		PlaceFigure(45, "bishop")
 	}
 
 	async function Get_Figure_Dict()
