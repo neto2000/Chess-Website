@@ -166,6 +166,21 @@ function App() {
 	
 								if(key == "ne" || key == "se" || key == "sw" || key == "nw")
 								{
+									if(figure_pos % 8 == 0)
+									{
+										if(key == "ne" || key == "se")
+										{
+											continue
+										}
+									}
+									else if(figure_pos % 8 == 1)
+									{
+										if(key == "nw" || key == "sw")
+										{
+											continue
+										}
+									}
+
 	
 									if(current_highlight_pos % 8 == 0 ||current_highlight_pos % 8 == 1)
 									{
@@ -337,7 +352,7 @@ function App() {
 
 	function TestPlace()
 	{
-		PlaceFigure(28, "rook");
+		//PlaceFigure(28, "rook");
 		PlaceFigure(45, "bishop")
 	}
 
