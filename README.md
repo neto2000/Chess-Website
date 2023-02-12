@@ -17,7 +17,7 @@
    - [x] create dict where all images and possible movments of the figures is saved
    - [x] diffrent figures
 
-   - [ ] place all figures on start
+   - [x] place all figures on start
 
    - [x] highlight the possible paths of the figure
 

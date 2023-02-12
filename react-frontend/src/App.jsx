@@ -96,17 +96,54 @@ function App() {
 	function PlaceHighlights(figure_pos)
 	{
 		console.log(figure_pos)
+		
+		const new_content = [...content]
+		
+		for(let i = 1; i <= 64; i++)
+		{
+
+			// remove all path highlights
+			if (content[i - 1].is_highlight)
+			{
+				console.log("highlight")
+
+
+				const new_html_test = new_content.find(item => item.id === i)
+
+				if(new_html_test.type == "none")
+				{
+					new_html_test.html = [<></>]
+
+					console.log("none")
+				}
+				else
+				{
+					new_html_test.html = [
+						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html_test.id)}>
+							<img className='figure-image' src='/images/Bauer.svg'></img>
+						</button>				
+					];
+				}
+
+				new_html_test.is_highlight = false;
+
+			}		
+		}
+
+		
 
 		// activefigure: the figure from where the last highlights were spawned
 		// so the will highlights not be spawned twice!
 		if (active_figure == figure_pos)
 		{
 			console.log("again")
+
+
+		
 		}
 		else
 		{
 			// Place all Highlights with the specifications of the type
-			const new_content = [...content]
 	
 			const calc_dict = {"n": -8, "ne": -7, "e": 1, "se": 9, "s": 8, "sw": 7, "w": -1, "nw": -9}
 	
@@ -114,8 +151,7 @@ function App() {
 			let this_figure_dict = figure_dict[content[figure_pos - 1].type]
 			
 			let auto_fill = this_figure_dict["auto-fill"];
-	
-			console.log(auto_fill)
+
 			
 			// spawn the highlight of all possible moves
 			for (let key in this_figure_dict)
@@ -324,6 +360,9 @@ function App() {
 						</button>				
 					];
 				}
+
+				new_html.is_highlight = false;
+
 				setContent(new_content);
 			}		
 		}
