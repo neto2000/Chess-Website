@@ -356,6 +356,24 @@ function App() {
 		PlaceFigure(45, "bishop")
 	}
 
+	function StartPlaceOwnFigures()
+	{
+		for(let pawn_field = 49; pawn_field <= 56; pawn_field++)
+		{
+			PlaceFigure(pawn_field, "pawn")
+		}
+
+		PlaceFigure(57, "rook");
+		PlaceFigure(58, "knight");
+		PlaceFigure(59, "bishop");
+		PlaceFigure(60, "king");
+		PlaceFigure(61, "queen");
+		PlaceFigure(62, "bishop");
+		PlaceFigure(63, "knight");
+		PlaceFigure(64, "rook");
+
+	}
+
 	async function Get_Figure_Dict()
 	{
 		const promise = await fetch("/dict", {
@@ -375,7 +393,7 @@ function App() {
 				</div>
 
 			</div>
-			<button onClick={TestPlace}>Place</button>
+			<button onClick={StartPlaceOwnFigures}>Place</button>
 		</div>
 	)
 }
