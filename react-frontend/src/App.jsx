@@ -24,7 +24,7 @@ function App() {
 	// create content State with empty HTML tag
 	for(let j = 1; j <= 64; j++)
 	{
-		new_content.push({id: j,html:[<></>], type: "none", is_highlight: false})
+		new_content.push({id: j,html:[<></>], type: "none", is_highlight: false, team: "none"})
 	}
 
 	const [content, setContent] = useState(new_content);
@@ -71,7 +71,7 @@ function App() {
 
 	
 
-	function PlaceFigure(field_pos, type)
+	function PlaceFigure(field_pos, type, team)
 	{
 		const new_content = [...content]
 
@@ -85,8 +85,10 @@ function App() {
 		];
 
 		new_html.type = type
+		new_html.team = team
 
 		console.log(new_html.type)
+		console.log(new_html.team)
 
 		setContent(new_content);
 
@@ -166,13 +168,21 @@ function App() {
 							for(let i = 1; i <= this_figure_dict[key]; i++)
 							{
 								const current_highlight_pos = i * calc_dict[key] + figure_pos;
-	
+
+								
 								// test if highlight is out of border
 								if(current_highlight_pos < 1 || current_highlight_pos > 64)
 								{
 									continue
 								}
-	
+
+								// continue when the highlight is on your own figures so you cant beat your own figures
+								if(content[figure_pos - 1].team == content[current_highlight_pos - 1].team)
+								{
+									console.log(content[figure_pos - 1].team)
+
+									break
+								}
 								// check that there is no row overflow by east and west direction
 								if(key == "e" || key == "w")
 								{
@@ -293,6 +303,15 @@ function App() {
 							{
 								continue
 							}
+
+							// continue when the highlight is on your own figures so you cant beat your own figures
+							if(content[figure_pos - 1].team == content[current_highlight_pos - 1].team)
+							{
+								console.log(content[figure_pos - 1].team)
+
+								continue
+							}
+
 	
 							const new_html = new_content.find(item => item.id === current_highlight_pos)
 	
@@ -378,12 +397,15 @@ function App() {
 		];
 
 		new_html.type = content[old_pos - 1].type;
+		new_html.team = content[old_pos - 1].team;
 
 		const old_html = new_content.find(item => item.id === old_pos)
 
 		old_html.html = [<></>];
 
 		old_html.type = "none";
+
+		old_html.team = "none"
 
 		setContent(new_content);
 
@@ -399,17 +421,17 @@ function App() {
 	{
 		for(let pawn_field = 49; pawn_field <= 56; pawn_field++)
 		{
-			PlaceFigure(pawn_field, "pawn")
+			PlaceFigure(pawn_field, "pawn", "black")
 		}
 
-		PlaceFigure(57, "rook");
-		PlaceFigure(58, "knight");
-		PlaceFigure(59, "bishop");
-		PlaceFigure(60, "king");
-		PlaceFigure(61, "queen");
-		PlaceFigure(62, "bishop");
-		PlaceFigure(63, "knight");
-		PlaceFigure(64, "rook");
+		PlaceFigure(57, "rook", "black");
+		PlaceFigure(58, "knight", "black");
+		PlaceFigure(59, "bishop", "black");
+		PlaceFigure(60, "king", "black");
+		PlaceFigure(61, "queen", "black");
+		PlaceFigure(62, "bishop", "black");
+		PlaceFigure(63, "knight", "black");
+		PlaceFigure(64, "rook", "black");
 
 	}
 
