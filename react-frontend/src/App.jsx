@@ -9,6 +9,9 @@ let figure_dict;
 
 let active_figure = 0;
 
+let own_team;
+let enemy_team;
+
 
 function App() {
 
@@ -17,6 +20,8 @@ function App() {
 		console.log("Get Figure Dict")
 
 		Get_Figure_Dict();
+
+		SetTeams();
 
 	}, [])
 
@@ -67,6 +72,14 @@ function App() {
 	
 		counter++;
 
+	}
+
+
+	function SetTeams()
+	{
+		own_team = "black"
+
+		enemy_team = "white"
 	}
 
 	
@@ -348,6 +361,53 @@ function App() {
 								}
 							}
 
+							if(content[figure_pos - 1].type == "pawn")
+							{
+								if(content[current_highlight_pos - 1].team != "none")
+								{
+									continue
+								}
+
+								let pawn_beat_point1 = figure_pos - 9;
+								let pawn_beat_point2 = figure_pos - 7; 
+
+								console.log("team: " + content[pawn_beat_point2 - 1].team)
+
+								if(content[pawn_beat_point1 - 1].team == enemy_team)
+								{
+									const pawn_beat1 = new_content.find(item => item.id === pawn_beat_point1)
+
+									pawn_beat1.html = [
+										<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point1)}>
+											
+											<img className='highlight-image' src='/images/highlight.svg'></img>
+											
+											<img className='figure-image' src='/images/Bauer.svg'></img>
+										</button>
+								
+									];
+
+									pawn_beat1.is_highlight = true;
+								}
+
+								if(content[pawn_beat_point2 - 1].team == enemy_team)
+								{
+									const pawn_beat2 = new_content.find(item => item.id === pawn_beat_point2)
+
+									pawn_beat2.html = [
+										<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point2)}>
+											
+											<img className='highlight-image' src='/images/highlight.svg'></img>
+											
+											<img className='figure-image' src='/images/Bauer.svg'></img>
+										</button>
+								
+									];
+
+									pawn_beat2.is_highlight = true;
+								}
+							}
+
 	
 							const new_html = new_content.find(item => item.id === current_highlight_pos)
 	
@@ -471,6 +531,8 @@ function App() {
 		PlaceFigure(62, "bishop", "black");
 		PlaceFigure(63, "knight", "black");
 		PlaceFigure(64, "rook", "black");
+
+		PlaceFigure(27, "rook", "white");
 
 	}
 
