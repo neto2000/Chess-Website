@@ -24,7 +24,7 @@ function App() {
 	// create content State with empty HTML tag
 	for(let j = 1; j <= 64; j++)
 	{
-		new_content.push({id: j,html:[<></>], type: "none", is_highlight: false, team: "none"})
+		new_content.push({id: j,html:[<></>], type: "none", is_highlight: false, team: "none", is_first_move: true})
 	}
 
 	const [content, setContent] = useState(new_content);
@@ -312,6 +312,42 @@ function App() {
 								continue
 							}
 
+							// on start the pawn can move 2 fields
+
+							if(content[figure_pos - 1].is_first_move && content[figure_pos - 1].type == "pawn")
+							{
+								let second_highlight_pawn_pos = current_highlight_pos - 8;
+
+								if(second_highlight_pawn_pos > 0 && content[figure_pos - 1].team != content[second_highlight_pawn_pos - 1].team)
+								{
+									const second_highlight = new_content.find(item => item.id === second_highlight_pawn_pos)
+
+									// check if a figure is on the field
+									if (second_highlight.html[0].type == "button")
+									{
+										second_highlight.html = [
+											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, second_highlight_pawn_pos)}>
+												
+												<img className='highlight-image' src='/images/highlight.svg'></img>
+												
+												<img className='figure-image' src='/images/Bauer.svg'></img>
+											</button>
+									
+										];
+									}
+									else
+									{
+			
+										second_highlight.html.push(
+										<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, second_highlight_pawn_pos)}>
+											<img className='highlight-image' src='/images/highlight.svg'></img>
+										</button>);
+									}
+			
+									second_highlight.is_highlight = true;
+								}
+							}
+
 	
 							const new_html = new_content.find(item => item.id === current_highlight_pos)
 	
@@ -398,6 +434,7 @@ function App() {
 
 		new_html.type = content[old_pos - 1].type;
 		new_html.team = content[old_pos - 1].team;
+		new_html.is_first_move = false;
 
 		const old_html = new_content.find(item => item.id === old_pos)
 
@@ -406,6 +443,8 @@ function App() {
 		old_html.type = "none";
 
 		old_html.team = "none"
+
+		old_html.is_first_move = false;
 
 		setContent(new_content);
 
