@@ -361,8 +361,11 @@ function App() {
 								}
 							}
 
+
+							// pawn can beat diagonal
 							if(content[figure_pos - 1].type == "pawn")
 							{
+								// pawn cant beat the figure straight ahead
 								if(content[current_highlight_pos - 1].team != "none")
 								{
 									continue
