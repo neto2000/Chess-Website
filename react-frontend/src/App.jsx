@@ -189,6 +189,33 @@ function App() {
 									continue
 								}
 
+								if(content[figure_pos - 1].type == "knight")
+								{
+
+									let knight_beat_point1 = 0;
+
+									let knight_beat_point2 = 0;
+
+									if(key == "n" ||key == "s")
+									{
+										knight_beat_point1 = current_highlight_pos + 1;
+
+										knight_beat_point2 = current_highlight_pos - 1;
+									}
+									else if (key == "w" ||key == "e")
+									{
+										knight_beat_point1 = current_highlight_pos + 8;
+
+										knight_beat_point2 = current_highlight_pos - 8;
+									}
+
+
+									if(content[figure_pos - 1].team == content[knight_beat_point1 - 1].team && knight_beat_point1 > 0)
+									{
+
+									}
+								}
+
 								// continue when the highlight is on your own figures so you cant beat your own figures
 								if(content[figure_pos - 1].team == content[current_highlight_pos - 1].team)
 								{
@@ -325,6 +352,87 @@ function App() {
 								continue
 							}
 
+
+							if(key == "e" || key == "w")
+							{
+
+								// MAth.floor rundet immer ab!
+								if(Math.floor(figure_pos / 8) != Math.floor(current_highlight_pos / 8))
+								{
+									if(figure_pos % 8 == 0 && current_highlight_pos < figure_pos && current_highlight_pos % 8 != 0)
+									{
+										
+									}
+									else if(current_highlight_pos % 8 != 0)
+									{
+										continue
+									}
+									else if(figure_pos % 8 == 0 && current_highlight_pos % 8 == 0)
+									{
+										continue
+									}
+									
+								}
+								else if(current_highlight_pos % 8 == 0 || figure_pos % 8 == 0)
+								{
+									continue
+								}
+							}
+
+							if(key == "ne" || key == "se" || key == "sw" || key == "nw")
+							{
+								if(figure_pos % 8 == 0)
+								{
+									if(key == "ne" || key == "se")
+									{
+										continue
+									}
+								}
+								else if(figure_pos % 8 == 1)
+								{
+									if(key == "nw" || key == "sw")
+									{
+										continue
+									}
+								}
+
+
+								if(current_highlight_pos % 8 == 0 ||current_highlight_pos % 8 == 1)
+								{
+									const new_html = new_content.find(item => item.id === current_highlight_pos)
+
+
+									// check if a figure is on the field
+									if (new_html.html[0].type == "button")
+									{
+										new_html.html = [
+											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+												
+												<img className='highlight-image' src='/images/highlight.svg'></img>
+												
+												<img className='figure-image' src='/images/Bauer.svg'></img>
+											</button>
+									
+										];
+									}
+									else
+									{
+
+										new_html.html.push(
+										<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+											<img className='highlight-image' src='/images/highlight.svg'></img>
+										</button>);
+									}
+
+									new_html.is_highlight = true;
+
+
+									break
+								}
+							}
+
+
+
 							// on start the pawn can move 2 fields
 
 							if(content[figure_pos - 1].is_first_move && content[figure_pos - 1].type == "pawn")
@@ -374,42 +482,54 @@ function App() {
 								let pawn_beat_point1 = figure_pos - 9;
 								let pawn_beat_point2 = figure_pos - 7; 
 
-								console.log("team: " + content[pawn_beat_point2 - 1].team)
 
-								if(content[pawn_beat_point1 - 1].team == enemy_team)
+								if(pawn_beat_point1 > 0 && content[pawn_beat_point1 - 1].team == enemy_team)
 								{
-									const pawn_beat1 = new_content.find(item => item.id === pawn_beat_point1)
+									// preventing row overflow
+									if(figure_pos % 8 != 1)
+									{
 
-									pawn_beat1.html = [
-										<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point1)}>
-											
-											<img className='highlight-image' src='/images/highlight.svg'></img>
-											
-											<img className='figure-image' src='/images/Bauer.svg'></img>
-										</button>
-								
-									];
+										const pawn_beat1 = new_content.find(item => item.id === pawn_beat_point1)
+	
+										pawn_beat1.html = [
+											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point1)}>
+												
+												<img className='highlight-image' src='/images/highlight.svg'></img>
+												
+												<img className='figure-image' src='/images/Bauer.svg'></img>
+											</button>
+									
+										];
+	
+										pawn_beat1.is_highlight = true;
+									}
 
-									pawn_beat1.is_highlight = true;
 								}
 
-								if(content[pawn_beat_point2 - 1].team == enemy_team)
+								if(pawn_beat_point2 > 0 && content[pawn_beat_point2 - 1].team == enemy_team)
 								{
-									const pawn_beat2 = new_content.find(item => item.id === pawn_beat_point2)
+									// preventing row overflow
+									if(figure_pos % 8 != 0)
+									{
+										const pawn_beat2 = new_content.find(item => item.id === pawn_beat_point2)
+	
+										pawn_beat2.html = [
+											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point2)}>
+												
+												<img className='highlight-image' src='/images/highlight.svg'></img>
+												
+												<img className='figure-image' src='/images/Bauer.svg'></img>
+											</button>
+									
+										];
+	
+										pawn_beat2.is_highlight = true;
+									}
 
-									pawn_beat2.html = [
-										<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point2)}>
-											
-											<img className='highlight-image' src='/images/highlight.svg'></img>
-											
-											<img className='figure-image' src='/images/Bauer.svg'></img>
-										</button>
-								
-									];
-
-									pawn_beat2.is_highlight = true;
 								}
 							}
+
+							
 
 	
 							const new_html = new_content.find(item => item.id === current_highlight_pos)
@@ -535,7 +655,7 @@ function App() {
 		PlaceFigure(63, "knight", "black");
 		PlaceFigure(64, "rook", "black");
 
-		PlaceFigure(27, "rook", "white");
+		PlaceFigure(25, "rook", "white");
 
 	}
 
