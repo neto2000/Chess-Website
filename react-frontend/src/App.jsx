@@ -23,6 +23,9 @@ function App() {
 
 		SetTeams();
 
+
+		StartPlaceOwnFigures();
+
 	}, [])
 
 
