@@ -396,39 +396,6 @@ function App() {
 									}
 								}
 
-
-								if(current_highlight_pos % 8 == 0 ||current_highlight_pos % 8 == 1)
-								{
-									const new_html = new_content.find(item => item.id === current_highlight_pos)
-
-
-									// check if a figure is on the field
-									if (new_html.html[0].type == "button")
-									{
-										new_html.html = [
-											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
-												
-												<img className='highlight-image' src='/images/highlight.svg'></img>
-												
-												<img className='figure-image' src='/images/Bauer.svg'></img>
-											</button>
-									
-										];
-									}
-									else
-									{
-
-										new_html.html.push(
-										<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
-											<img className='highlight-image' src='/images/highlight.svg'></img>
-										</button>);
-									}
-
-									new_html.is_highlight = true;
-
-
-									break
-								}
 							}
 
 
