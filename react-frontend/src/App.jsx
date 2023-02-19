@@ -17,14 +17,14 @@ function App() {
 
 	useEffect(() => {
 
-		console.log("Get Figure Dict")
 
-		Get_Figure_Dict();
+		(async () => {
 
-		SetTeams();
+			await Get_Figure_Dict();
+			SetTeams();
+			StartPlaceOwnFigures();
 
-
-		StartPlaceOwnFigures();
+		})();
 
 	}, [])
 
@@ -93,9 +93,11 @@ function App() {
 
 		const new_html = new_content.find(item => item.id === field_pos)
 
+		const image_location = figure_dict[type].image;
+
 		new_html.html = [
 		<button className='figure-button' onClick={PlaceHighlights.bind(this, field_pos)}>
-			<img className='figure-image' src='/images/Bauer.svg'></img>
+			<img className='figure-image' src={image_location}></img>
 		</button>
 
 		];
@@ -259,7 +261,7 @@ function App() {
 													
 													<img className='highlight-image' src='/images/highlight.svg'></img>
 													
-													<img className='figure-image' src='/images/Bauer.svg'></img>
+													<img className='figure-image' src={figure_dict[new_html.type].image}></img>
 												</button>
 										
 											];
@@ -292,7 +294,7 @@ function App() {
 											
 											<img className='highlight-image' src='/images/highlight.svg'></img>
 											
-											<img className='figure-image' src='/images/Bauer.svg'></img>
+											<img className='figure-image' src={figure_dict[new_html.type].image}></img>
 										</button>
 								
 									];
@@ -473,7 +475,7 @@ function App() {
 												
 												<img className='highlight-image' src='/images/highlight.svg'></img>
 												
-												<img className='figure-image' src='/images/Bauer.svg'></img>
+												<img className='figure-image' src={figure_dict[second_highlight.type].image}></img>
 											</button>
 									
 										];
@@ -518,7 +520,7 @@ function App() {
 												
 												<img className='highlight-image' src='/images/highlight.svg'></img>
 												
-												<img className='figure-image' src='/images/Bauer.svg'></img>
+												<img className='figure-image' src={figure_dict[pawn_beat1.type].image}></img>
 											</button>
 									
 										];
@@ -540,7 +542,7 @@ function App() {
 												
 												<img className='highlight-image' src='/images/highlight.svg'></img>
 												
-												<img className='figure-image' src='/images/Bauer.svg'></img>
+												<img className='figure-image' src={figure_dict[pawn_beat2.type].image}></img>
 											</button>
 									
 										];
@@ -563,7 +565,7 @@ function App() {
 								new_html.html = [
 									<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 										
-										<img className='highlight-image' src='/images/highlight.svg'></img>
+										<img className='highlight-image' src={figure_dict[new_html.type].image}></img>
 										
 										<img className='figure-image' src='/images/Bauer.svg'></img>
 									</button>
@@ -612,7 +614,7 @@ function App() {
 					
 					<img className='highlight-image' src='/images/highlight.svg'></img>
 					
-					<img className='figure-image' src='/images/Bauer.svg'></img>
+					<img className='figure-image' src={figure_dict[content[position - 1].type].name}></img>
 				</button>
 		
 			];
@@ -655,7 +657,7 @@ function App() {
 				{
 					new_html.html = [
 						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html.id)}>
-							<img className='figure-image' src='/images/Bauer.svg'></img>
+							<img className='figure-image' src={figure_dict[content[i - 1].type].name}></img>
 						</button>				
 					];
 				}
@@ -669,10 +671,14 @@ function App() {
 		const new_content = [...content]
 
 		const new_html = new_content.find(item => item.id === new_pos)
+
+		const image_pos = figure_dict[content[old_pos - 1].type].image;
+
+		console.log(image_pos)
 		
 		new_html.html = [
 			<button className='figure-button' onClick={PlaceHighlights.bind(this, new_pos)}>
-				<img className='figure-image' src='/images/Bauer.svg'></img>
+				<img className='figure-image' src={image_pos}></img>
 			</button>				
 		];
 
