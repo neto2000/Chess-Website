@@ -708,19 +708,34 @@ function App() {
 
 	function StartPlaceOwnFigures()
 	{
+
+		console.log(own_team)
+
 		for(let pawn_field = 49; pawn_field <= 56; pawn_field++)
 		{
-			PlaceFigure(pawn_field, "pawn", "black")
+			PlaceFigure(pawn_field, "pawn", own_team)
 		}
 
-		PlaceFigure(57, "rook", "black");
-		PlaceFigure(58, "knight", "black");
-		PlaceFigure(59, "bishop", "black");
-		PlaceFigure(60, "king", "black");
-		PlaceFigure(61, "queen", "black");
-		PlaceFigure(62, "bishop", "black");
-		PlaceFigure(63, "knight", "black");
-		PlaceFigure(64, "rook", "black");
+		PlaceFigure(57, "rook", own_team);
+		PlaceFigure(58, "knight", own_team);
+		PlaceFigure(59, "bishop", own_team);
+
+		if(own_team == "black")
+		{
+			PlaceFigure(60, "king", own_team);
+			PlaceFigure(61, "queen", own_team);
+		}
+		else if(own_team == "white")
+		{
+			PlaceFigure(61, "queen", own_team);
+			PlaceFigure(60, "king", own_team);
+		}
+
+
+		
+		PlaceFigure(62, "bishop", own_team);
+		PlaceFigure(63, "knight", own_team);
+		PlaceFigure(64, "rook", own_team);
 
 		PlaceFigure(25, "rook", "white");
 
