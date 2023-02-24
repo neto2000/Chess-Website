@@ -34,7 +34,8 @@ async fn main()
     }))
 
     .route("/api", get(handler))
-    .route("/dict", get(get_figure_dict));
+    .route("/dict", get(get_figure_dict))
+    .route("/ws", get(ws_handler));
 
 
 
@@ -48,6 +49,12 @@ async fn main()
         .unwrap();
     
 }
+
+async fn ws_handler()
+{
+
+}
+
 
 async fn get_figure_dict() -> impl IntoResponse
 {
