@@ -1,6 +1,10 @@
 use axum::{
     routing::{get, post, get_service},
     http::StatusCode,
+    extract::{
+        ws::{Message, WebSocket, WebSocketUpgrade},
+        
+    },
     response::IntoResponse,
     Json,
     Router};
@@ -50,9 +54,28 @@ async fn main()
     
 }
 
-async fn ws_handler()
+async fn ws_handler(
+    ws: WebSocketUpgrade,
+) -> impl IntoResponse 
 {
+    println!("start");
 
+    ws.on_upgrade(move |socket| handle_socket(socket))
+}
+
+async fn handle_socket(mut socket: WebSocket)
+{
+    if let Some(msg) = socket.recv().await
+    {
+        if let Ok(msg) = msg {
+            println!("Message: {:?}", msg);
+        }
+        else
+        {
+            println!("failed!");
+            return ;
+        }
+    }
 }
 
 

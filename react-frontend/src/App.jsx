@@ -752,6 +752,15 @@ function App() {
 		figure_dict = data;    
 	}
 
+	function websocket()
+	{
+		const websocket = new WebSocket("wss://127.0.0.1:9000/ws");
+
+		websocket.onopen = () => {
+			console.log("websocket opened");
+		}
+	}
+
 	return (
 		<div className="App">
 			<div className="board-container">
@@ -761,6 +770,7 @@ function App() {
 
 			</div>
 			<button onClick={StartPlaceOwnFigures}>Place</button>
+			<button onClick={websocket}>Send Msg</button>
 		</div>
 	)
 }
