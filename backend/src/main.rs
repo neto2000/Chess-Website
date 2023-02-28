@@ -3,14 +3,18 @@ use axum::{
     http::StatusCode,
     extract::{
         ws::{Message, WebSocket, WebSocketUpgrade},
-        
+        State,
     },
+    response::Response,
     response::IntoResponse,
     Json,
     Router};
+use tokio::stream;
+use tokio::sync::broadcast;
 
+use futures::{stream::StreamExt, sink::SinkExt};
 
-use std::net::SocketAddr;
+use std::{net::SocketAddr, sync::Arc};
 use tower_http::services::{ServeDir, ServeFile};
 
 use serde::{Deserialize, Serialize};
@@ -18,9 +22,23 @@ use serde_json::{json};
 
 use std::{io};
 
+
+
+struct AppState {
+    tx: broadcast::Sender<String>,
+}
+
+
+
 #[tokio::main]
 async fn main()
 {
+
+    let (tx, _rx) = broadcast::channel(100);
+
+    let app_state = Arc::new(AppState{tx});
+
+
     let app = Router::new()
     .nest_service("/", get_service(ServeDir::new("static/frontend"))
         .handle_error(|error: io::Error| async move { 
@@ -39,7 +57,8 @@ async fn main()
 
     .route("/api", get(handler))
     .route("/dict", get(get_figure_dict))
-    .route("/ws", get(ws_handler));
+    .route("/ws", get(ws_handler))
+    .with_state(app_state);
 
 
 
@@ -56,26 +75,52 @@ async fn main()
 
 async fn ws_handler(
     ws: WebSocketUpgrade,
+    State(state): State<Arc<AppState>>,
 ) -> impl IntoResponse 
 {
     println!("start");
 
-    ws.on_upgrade(move |socket| handle_socket(socket))
+    ws.on_upgrade(|socket| handle_socket(socket, state))
 }
 
-async fn handle_socket(mut socket: WebSocket)
+async fn handle_socket(mut socket: WebSocket, state: Arc<AppState>)
 {
-    if let Some(msg) = socket.recv().await
-    {
-        if let Ok(msg) = msg {
-            println!("Message: {:?}", msg);
+    let (mut sender, mut receiver) = socket.split();
+
+    let mut rx = state.tx.subscribe();
+
+
+    let mut send_task = tokio::spawn(async move{
+        while let Ok(msg) = rx.recv().await {
+            if sender.send(Message::Text(msg)).await.is_err() 
+            {
+                break;
+            }
         }
-        else
+    });
+
+    let tx = state.tx.clone();
+
+    let mut recv_task = tokio::spawn(async move{
+
+        while let Some(Ok(Message::Text(message))) = receiver.next().await 
         {
-            println!("failed!");
-            return ;
+        
+            println!("message: {}" , message);
+    
+            let msg = format!("moin");
+            
+            let _ = tx.send(msg);
+            
         }
-    }
+    });
+
+    tokio::select! {
+        _ = (&mut send_task) => recv_task.abort(),
+        _ = (&mut recv_task) => send_task.abort(),
+    };
+
+
 }
 
 

@@ -13,6 +13,8 @@ let own_team;
 let enemy_team;
 
 
+
+
 function App() {
 
 	useEffect(() => {
@@ -23,10 +25,29 @@ function App() {
 			await Get_Figure_Dict();
 			SetTeams();
 			StartPlaceOwnFigures();
-
+			
 		})();
-
+		
 	}, [])
+
+
+
+
+	
+	
+	// start websocket
+	const websockett = new WebSocket("ws://127.0.0.1:9000/ws");
+
+	websockett.onopen = () => {
+		console.log("websocket opened");
+	}
+
+	
+
+
+
+
+
 
 
 	// create content State with empty HTML tag
@@ -34,20 +55,21 @@ function App() {
 	{
 		new_content.push({id: j,html:[<></>], type: "none", is_highlight: false, team: "none", is_first_move: true})
 	}
-
+	
 	const [content, setContent] = useState(new_content);
 
-
+	
+	
 	// create chess board 8x8
 	let chess_board = []
-
+	
 	let counter = 0;
-
-
+	
+	
 	for(let i = 1; i <= 64; i++)
 	{
 		
-
+		
 		if(counter % 2 == 0)
 		{
 			chess_board.push((
@@ -64,7 +86,7 @@ function App() {
 				</div>
 			));
 		}
-
+		
 		if (i % 8 == 0)
 		{
 			if(i != 0)
@@ -72,12 +94,13 @@ function App() {
 				counter++;
 			}
 		}
-	
+		
 		counter++;
 
 	}
 
 
+	
 	function SetTeams()
 	{
 		own_team = "black"
@@ -754,12 +777,18 @@ function App() {
 
 	function websocket()
 	{
-		const websocket = new WebSocket("wss://127.0.0.1:9000/ws");
+		
 
-		websocket.onopen = () => {
-			console.log("websocket opened");
+		
+
+		websockett.send("hello");
+
+		websockett.onmessage = function(e) {
+			console.log(e.data);
 		}
 	}
+
+
 
 	return (
 		<div className="App">
