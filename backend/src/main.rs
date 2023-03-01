@@ -108,7 +108,7 @@ async fn handle_socket(mut socket: WebSocket, state: Arc<AppState>)
         
             println!("message: {}" , message);
     
-            let msg = format!("moin");
+            let msg = message;
             
             let _ = tx.send(msg);
             

@@ -13,6 +13,12 @@ let own_team;
 let enemy_team;
 
 
+// start websocket
+const websockett = new WebSocket("ws://127.0.0.1:9000/ws");
+
+websockett.onopen = () => {
+	console.log("websocket opened");
+}
 
 
 function App() {
@@ -35,12 +41,7 @@ function App() {
 
 	
 	
-	// start websocket
-	const websockett = new WebSocket("ws://127.0.0.1:9000/ws");
-
-	websockett.onopen = () => {
-		console.log("websocket opened");
-	}
+	
 
 	
 
@@ -723,16 +724,34 @@ function App() {
 
 	}
 
-	function TestPlace()
+	function PlaceEnemyFigure(field_pos, type, team)
 	{
-		//PlaceFigure(28, "rook");
-		PlaceFigure(45, "bishop")
+		const new_content = [...content]
+
+		const new_html = new_content.find(item => item.id === field_pos)
+
+		const image_location = figure_dict[type].image;
+
+		new_html.html = [
+		<button className='figure-button'>
+			<img className='figure-image' src={image_location}></img>
+		</button>
+
+		];
+
+		new_html.type = type
+		new_html.team = team
+
+
+		setContent(new_content);
 	}
 
 	function StartPlaceOwnFigures()
 	{
 
 		console.log(own_team)
+
+		// Place own Figures
 
 		for(let pawn_field = 49; pawn_field <= 56; pawn_field++)
 		{
@@ -760,7 +779,35 @@ function App() {
 		PlaceFigure(63, "knight", own_team);
 		PlaceFigure(64, "rook", own_team);
 
-		PlaceFigure(25, "rook", "white");
+
+		
+		// Place enemy Figures
+
+		for(let pawn_field = 9; pawn_field <= 16; pawn_field++)
+		{
+			PlaceFigure(pawn_field, "pawn", enemy_team)
+		}
+
+		PlaceFigure(1, "rook", enemy_team);
+		PlaceFigure(2, "knight", enemy_team);
+		PlaceFigure(3, "bishop", enemy_team);
+
+		if(enemy_team == "black")
+		{
+			PlaceFigure(5, "king", enemy_team);
+			PlaceFigure(4, "queen", enemy_team);
+		}
+		else if(enemy_team == "white")
+		{
+			PlaceFigure(5, "queen", enemy_team);
+			PlaceFigure(4, "king", enemy_team);
+		}
+
+
+		
+		PlaceFigure(6, "bishop", enemy_team);
+		PlaceFigure(7, "knight", enemy_team);
+		PlaceFigure(8, "rook", enemy_team);
 
 	}
 
