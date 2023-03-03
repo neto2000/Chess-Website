@@ -676,14 +676,18 @@ function App() {
 				if(new_html.type == "none")
 				{
 					new_html.html = [<></>]
+
+					console.log("auf einmal none")
 				}
 				else
 				{
 					new_html.html = [
 						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html.id)}>
-							<img className='figure-image' src={figure_dict[content[i - 1].type].name}></img>
+							<img className='figure-image' src={figure_dict[content[i - 1].type].image}></img>
 						</button>				
 					];
+
+					console.log("kein none" + new_html.id)
 				}
 
 				new_html.is_highlight = false;
