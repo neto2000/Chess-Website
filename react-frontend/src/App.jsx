@@ -206,6 +206,8 @@ function App() {
 					{
 						if (this_figure_dict[key] != 0)
 						{
+
+							let highlight_on_figure = false;
 	
 							for(let i = 1; i <= this_figure_dict[key]; i++)
 							{
@@ -227,6 +229,15 @@ function App() {
 
 									break
 								}
+
+								// you can only beat one figure in each direction
+								if(highlight_on_figure)
+								{
+									break;
+								}
+
+
+
 								// check that there is no row overflow by east and west direction
 								if(key == "e" || key == "w")
 								{
@@ -332,6 +343,11 @@ function App() {
 								}
 	
 								new_html.is_highlight = true;
+
+								if(content[current_highlight_pos - 1].type != "none")
+								{
+									highlight_on_figure = true;
+								}
 							}
 						}
 					}
@@ -416,7 +432,7 @@ function App() {
 								continue
 							}
 
-
+							
 
 
 							if(current_highlight_pos < 1 || current_highlight_pos > 64)
@@ -477,8 +493,6 @@ function App() {
 								}
 
 							}
-
-
 
 
 							// on start the pawn can move 2 fields
