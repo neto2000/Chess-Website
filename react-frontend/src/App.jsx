@@ -21,6 +21,8 @@ websockett.onopen = () => {
 }
 
 
+
+
 function App() {
 
 	useEffect(() => {
@@ -29,7 +31,7 @@ function App() {
 		(async () => {
 
 			await Get_Figure_Dict();
-			SetTeams();
+			await SetTeams();
 			StartPlaceOwnFigures();
 			
 		})();
@@ -60,6 +62,10 @@ function App() {
 	const [content, setContent] = useState(new_content);
 
 	
+
+
+	const [game_over_screen, setGame_over_screen] = useState(<></>);
+
 	
 	// create chess board 8x8
 	let chess_board = []
@@ -102,11 +108,51 @@ function App() {
 
 
 	
-	function SetTeams()
+	async function SetTeams()
 	{
-		own_team = "black"
 
-		enemy_team = "white"
+		websockett.send("which team")
+
+		return new Promise((resolve, reject) => {
+
+			websockett.onmessage = function(e) {
+				console.log(e.data);
+			
+				if(e.data == "white")
+				{
+					own_team = e.data;
+
+					enemy_team = "black";
+				}
+				else if(e.data == "black")
+				{
+					own_team = e.data;
+
+					enemy_team = "white";
+
+				}
+				else if(e.data == "none")
+				{
+					GameFull();
+				}
+				else
+				{
+					let turn_dict = JSON.parse(e.data);
+				
+					console.log(turn_dict);
+				
+				
+					if(turn_dict.team == enemy_team)
+					{
+						console.log("execute move");
+					}
+				}
+				resolve()
+				
+			}
+
+		})
+
 	}
 
 	
@@ -767,6 +813,8 @@ function App() {
 	function StartPlaceOwnFigures()
 	{
 
+		
+
 		console.log(own_team)
 
 		// Place own Figures
@@ -829,6 +877,49 @@ function App() {
 
 	}
 
+	function GameFull()
+	{
+		let gamefull = (
+		<div  className='GameOverScreen'>
+			<div className='overlay-container'>
+				<p className='overlay-text'>Game Full</p>
+			</div>
+		</div>
+		)
+
+		setGame_over_screen(gamefull);
+	}
+
+
+	function GameOverScreen(win)
+	{
+
+		let GameOverHtml = (<></>)
+
+		if(win)
+		{
+			GameOverHtml = (
+				<div  className='GameOverScreen'>
+					<div className='overlay-container'>
+						<p className='overlay-text'>You Won</p>
+					</div>
+				</div>
+			);
+		}
+		else
+		{
+			GameOverHtml = (
+				<div  className='GameOverScreen'>
+					<div className='overlay-container'>
+						<p className='overlay-text'>You Lost</p>
+					</div>
+				</div>
+			);
+		}
+
+		setGame_over_screen(GameOverHtml);
+	}
+
 	async function Get_Figure_Dict()
 	{
 		const promise = await fetch("/dict", {
@@ -840,17 +931,13 @@ function App() {
 		figure_dict = data;    
 	}
 
-	function websocket()
+	function send_turn()
 	{
-		
 
-		
+		let test = {team:own_team,turn:"2b"}
 
-		websockett.send("hello");
+		websockett.send(JSON.stringify(test));
 
-		websockett.onmessage = function(e) {
-			console.log(e.data);
-		}
 	}
 
 
@@ -863,8 +950,14 @@ function App() {
 				</div>
 
 			</div>
+
+			<div>
+				{game_over_screen}
+			</div>
+
 			<button onClick={StartPlaceOwnFigures}>Place</button>
-			<button onClick={websocket}>Send Msg</button>
+			<button onClick={send_turn}>Send Msg</button>
+			<button onClick={GameOverScreen.bind(this, true)}>Game Over Screen</button>
 		</div>
 	)
 }

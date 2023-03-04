@@ -14,7 +14,7 @@ use tokio::sync::broadcast;
 
 use futures::{stream::StreamExt, sink::SinkExt};
 
-use std::{net::SocketAddr, sync::Arc};
+use std::{net::SocketAddr, sync::Arc, sync::Mutex};
 use tower_http::services::{ServeDir, ServeFile};
 
 use serde::{Deserialize, Serialize};
@@ -26,8 +26,9 @@ use std::{io};
 
 struct AppState {
     tx: broadcast::Sender<String>,
+    black: Arc<Mutex<bool>>,
+    white: Arc<Mutex<bool>>,
 }
-
 
 
 #[tokio::main]
@@ -36,7 +37,10 @@ async fn main()
 
     let (tx, _rx) = broadcast::channel(100);
 
-    let app_state = Arc::new(AppState{tx});
+    let white = Arc::new(Mutex::new(false.to_owned()));
+    let black = Arc::new(Mutex::new(false.to_owned()));
+
+    let app_state = Arc::new(AppState{tx, black, white});
 
 
     let app = Router::new()
@@ -104,13 +108,44 @@ async fn handle_socket(mut socket: WebSocket, state: Arc<AppState>)
     let mut recv_task = tokio::spawn(async move{
 
         while let Some(Ok(Message::Text(message))) = receiver.next().await 
-        {
+        {   
+            if message == "which team"
+            {
+
+                let mut msg = String::from("none");
+
+                let mut black = state.black.lock().unwrap();
+                let mut white = state.white.lock().unwrap();
+                
+
+                if *black == false
+                {
+
+                    *black = true.to_owned();
+
+                    msg = String::from("black");
+                }
+                else if *white == false
+                {
+                    msg = String::from("white");
+
+                    *white = true.to_owned();
+                }
+
+                println!("msg: {}", msg);
+
+                let _ = tx.send(msg);
+            }
+            else
+            {
+
+                println!("message: {}" , message);
         
-            println!("message: {}" , message);
-    
-            let msg = message;
-            
-            let _ = tx.send(msg);
+                let msg = message;
+                
+                let _ = tx.send(msg);
+            }
+
             
         }
     });
