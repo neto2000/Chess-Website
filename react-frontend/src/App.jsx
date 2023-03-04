@@ -638,7 +638,7 @@ function App() {
 					
 					<img className='highlight-image' src='/images/highlight.svg'></img>
 					
-					<img className='figure-image' src={figure_dict[content[position - 1].type].name}></img>
+					<img className='figure-image' src={figure_dict[content[position - 1].type].image}></img>
 				</button>
 		
 			];
@@ -789,29 +789,29 @@ function App() {
 
 		for(let pawn_field = 9; pawn_field <= 16; pawn_field++)
 		{
-			PlaceFigure(pawn_field, "pawn", enemy_team)
+			PlaceEnemyFigure(pawn_field, "pawn", enemy_team)
 		}
 
-		PlaceFigure(1, "rook", enemy_team);
-		PlaceFigure(2, "knight", enemy_team);
-		PlaceFigure(3, "bishop", enemy_team);
+		PlaceEnemyFigure(1, "rook", enemy_team);
+		PlaceEnemyFigure(2, "knight", enemy_team);
+		PlaceEnemyFigure(3, "bishop", enemy_team);
 
 		if(enemy_team == "black")
 		{
-			PlaceFigure(5, "king", enemy_team);
-			PlaceFigure(4, "queen", enemy_team);
+			PlaceEnemyFigure(5, "king", enemy_team);
+			PlaceEnemyFigure(4, "queen", enemy_team);
 		}
 		else if(enemy_team == "white")
 		{
-			PlaceFigure(5, "queen", enemy_team);
-			PlaceFigure(4, "king", enemy_team);
+			PlaceEnemyFigure(5, "queen", enemy_team);
+			PlaceEnemyFigure(4, "king", enemy_team);
 		}
 
 
 		
-		PlaceFigure(6, "bishop", enemy_team);
-		PlaceFigure(7, "knight", enemy_team);
-		PlaceFigure(8, "rook", enemy_team);
+		PlaceEnemyFigure(6, "bishop", enemy_team);
+		PlaceEnemyFigure(7, "knight", enemy_team);
+		PlaceEnemyFigure(8, "rook", enemy_team);
 
 	}
 
