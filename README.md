@@ -32,7 +32,7 @@
 
    - [x] implement axum
 
-   - [ ] websockets
+   - [x] websockets
 
    - [ ] get move of the first client (vice versa)
    - [ ] send move to the second client (vice versa)
