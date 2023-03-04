@@ -682,7 +682,7 @@ function App() {
 				else
 				{
 					new_html.html = [
-						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html.id)}>
+						<button className='figure-button'>
 							<img className='figure-image' src={figure_dict[content[i - 1].type].image}></img>
 						</button>				
 					];
