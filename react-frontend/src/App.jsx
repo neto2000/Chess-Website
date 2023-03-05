@@ -13,6 +13,9 @@ let own_team;
 let enemy_team;
 
 
+let your_turn = false;
+
+
 // start websocket
 const websockett = new WebSocket("ws://127.0.0.1:9000/ws");
 
@@ -123,12 +126,16 @@ function App() {
 					own_team = e.data;
 
 					enemy_team = "black";
+
+					your_turn = true;
 				}
 				else if(e.data == "black")
 				{
 					own_team = e.data;
 
 					enemy_team = "white";
+
+					your_turn = false;
 
 				}
 				else if(e.data == "none")
@@ -145,6 +152,8 @@ function App() {
 						console.log("execute move");
 
 						MoveEnemyFigure(turn_dict.type, turn_dict.old_pos, turn_dict.new_pos);
+
+						your_turn = true;
 					}
 				}
 				resolve()
@@ -185,106 +194,320 @@ function App() {
 	
 	function PlaceHighlights(figure_pos)
 	{
-		console.log(figure_pos)
-		
-		const new_content = [...content]
-		
-		for(let i = 1; i <= 64; i++)
+
+		if(your_turn)
 		{
 
-			// remove all path highlights
-			if (content[i - 1].is_highlight)
+			console.log(figure_pos)
+			
+			const new_content = [...content]
+			
+			for(let i = 1; i <= 64; i++)
 			{
-				console.log("highlight")
-
-
-				const new_html_test = new_content.find(item => item.id === i)
-
-				if(new_html_test.type == "none")
-				{
-					new_html_test.html = [<></>]
-
-					console.log("none")
-				}
-				else
-				{
-					new_html_test.html = [
-						<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html_test.id)}>
-							<img className='figure-image' src='/images/Bauer.svg'></img>
-						</button>				
-					];
-				}
-
-				new_html_test.is_highlight = false;
-
-			}		
-		}
-
-		
-
-		// activefigure: the figure from where the last highlights were spawned
-		// so the will highlights not be spawned twice!
-		if (active_figure == figure_pos)
-		{
-			console.log("again")
-
-
-		
-		}
-		else
-		{
-			// Place all Highlights with the specifications of the type
 	
-			const calc_dict = {"n": -8, "ne": -7, "e": 1, "se": 9, "s": 8, "sw": 7, "w": -1, "nw": -9}
-	
-			
-			let this_figure_dict = figure_dict[content[figure_pos - 1].type]
-			
-			let auto_fill = this_figure_dict["auto-fill"];
-
-			
-			// spawn the highlight of all possible moves
-			for (let key in this_figure_dict)
-			{
-				if(key != "start-pos" && key != "image" && key != "auto-fill")
+				// remove all path highlights
+				if (content[i - 1].is_highlight)
 				{
-					if(auto_fill)
+					console.log("highlight")
+	
+	
+					const new_html_test = new_content.find(item => item.id === i)
+	
+					if(new_html_test.type == "none")
 					{
-						if (this_figure_dict[key] != 0)
-						{
-
-							let highlight_on_figure = false;
+						new_html_test.html = [<></>]
 	
-							for(let i = 1; i <= this_figure_dict[key]; i++)
+						console.log("none")
+					}
+					else
+					{
+						new_html_test.html = [
+							<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html_test.id)}>
+								<img className='figure-image' src='/images/Bauer.svg'></img>
+							</button>				
+						];
+					}
+	
+					new_html_test.is_highlight = false;
+	
+				}		
+			}
+	
+			
+	
+			// activefigure: the figure from where the last highlights were spawned
+			// so the will highlights not be spawned twice!
+			if (active_figure == figure_pos)
+			{
+				console.log("again")
+	
+	
+			
+			}
+			else
+			{
+				// Place all Highlights with the specifications of the type
+		
+				const calc_dict = {"n": -8, "ne": -7, "e": 1, "se": 9, "s": 8, "sw": 7, "w": -1, "nw": -9}
+		
+				
+				let this_figure_dict = figure_dict[content[figure_pos - 1].type]
+				
+				let auto_fill = this_figure_dict["auto-fill"];
+	
+				
+				// spawn the highlight of all possible moves
+				for (let key in this_figure_dict)
+				{
+					if(key != "start-pos" && key != "image" && key != "auto-fill")
+					{
+						if(auto_fill)
+						{
+							if (this_figure_dict[key] != 0)
 							{
-								const current_highlight_pos = i * calc_dict[key] + figure_pos;
-
+	
+								let highlight_on_figure = false;
+		
+								for(let i = 1; i <= this_figure_dict[key]; i++)
+								{
+									const current_highlight_pos = i * calc_dict[key] + figure_pos;
+	
+									
+									// test if highlight is out of border
+									if(current_highlight_pos < 1 || current_highlight_pos > 64)
+									{
+										continue
+									}
+	
+									
+	
+									// continue when the highlight is on your own figures so you cant beat your own figures
+									if(content[figure_pos - 1].team == content[current_highlight_pos - 1].team)
+									{
+										console.log(content[figure_pos - 1].team)
+	
+										break
+									}
+	
+									// you can only beat one figure in each direction
+									if(highlight_on_figure)
+									{
+										break;
+									}
+	
+	
+	
+									// check that there is no row overflow by east and west direction
+									if(key == "e" || key == "w")
+									{
+		
+										// MAth.floor rundet immer ab!
+										if(Math.floor(figure_pos / 8) != Math.floor(current_highlight_pos / 8))
+										{
+											if(figure_pos % 8 == 0 && current_highlight_pos < figure_pos && current_highlight_pos % 8 != 0)
+											{
+												
+											}
+											else if(current_highlight_pos % 8 != 0)
+											{
+												continue
+											}
+											else if(figure_pos % 8 == 0 && current_highlight_pos % 8 == 0)
+											{
+												continue
+											}
+											
+										}
+										else if(current_highlight_pos % 8 == 0 || figure_pos % 8 == 0)
+										{
+											continue
+										}
+									}
+		
+									if(key == "ne" || key == "se" || key == "sw" || key == "nw")
+									{
+										if(figure_pos % 8 == 0)
+										{
+											if(key == "ne" || key == "se")
+											{
+												continue
+											}
+										}
+										else if(figure_pos % 8 == 1)
+										{
+											if(key == "nw" || key == "sw")
+											{
+												continue
+											}
+										}
+	
+		
+										if(current_highlight_pos % 8 == 0 ||current_highlight_pos % 8 == 1)
+										{
+											const new_html = new_content.find(item => item.id === current_highlight_pos)
+		
+		
+											// check if a figure is on the field
+											if (new_html.html[0].type == "button")
+											{
+												new_html.html = [
+													<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+														
+														<img className='highlight-image' src='/images/highlight.svg'></img>
+														
+														<img className='figure-image' src={figure_dict[new_html.type].image}></img>
+													</button>
+											
+												];
+											}
+											else
+											{
+		
+												new_html.html.push(
+												<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+													<img className='highlight-image' src='/images/highlight.svg'></img>
+												</button>);
+											}
+		
+											new_html.is_highlight = true;
+		
+		
+											break
+										}
+									}
+		
+		
+									const new_html = new_content.find(item => item.id === current_highlight_pos)
+		
+		
+									// check if a figure is on the field
+									if (new_html.html[0].type == "button")
+									{
+										new_html.html = [
+											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+												
+												<img className='highlight-image' src='/images/highlight.svg'></img>
+												
+												<img className='figure-image' src={figure_dict[new_html.type].image}></img>
+											</button>
+									
+										];
+									}
+									else
+									{
+										new_html.html.push(
+										<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+											<img className='highlight-image' src='/images/highlight.svg'></img>
+										</button>);
+									}
+		
+									new_html.is_highlight = true;
+	
+									if(content[current_highlight_pos - 1].type != "none")
+									{
+										highlight_on_figure = true;
+									}
+								}
+							}
+						}
+						else
+						{
+							
+							if (this_figure_dict[key] != 0)
+							{
 								
-								// test if highlight is out of border
+								const current_highlight_pos = this_figure_dict[key] * calc_dict[key] + figure_pos;
+	
+	
+								// special movement for the knight
+								if(content[figure_pos - 1].type == "knight")
+								{
+	
+									let knight_beat_point1 = 0;
+	
+									let knight_beat_point2 = 0;
+	
+									if(key == "n" ||key == "s")
+									{
+										knight_beat_point1 = current_highlight_pos + 1;
+	
+										knight_beat_point2 = current_highlight_pos - 1;
+									}
+									else if (key == "w" ||key == "e")
+									{
+										knight_beat_point1 = current_highlight_pos + 8;
+	
+										knight_beat_point2 = current_highlight_pos - 8;
+									}
+	
+	
+									// prevent row overflow
+									if(figure_pos % 8 == 7 && key == "e")
+									{
+										continue
+									}
+									if(figure_pos % 8 == 2 && key == "w")
+									{
+										continue
+									}
+	
+									if(figure_pos % 8 == 0 && key == "e")
+									{
+										continue
+									}
+									if(figure_pos % 8 == 1 && key == "w")
+									{
+										continue
+									}
+	
+	
+									if(knight_beat_point1 > 0 && knight_beat_point1 < 64 && content[figure_pos - 1].team != content[knight_beat_point1 - 1].team)
+									{
+										if((key == "n" || key == "s") && figure_pos % 8 == 0)
+										{
+											// Do nothing
+										}
+										else
+										{
+	
+											RenderHighlight(knight_beat_point1, figure_pos);
+										}
+										
+									}
+									if(knight_beat_point2 > 0 && knight_beat_point2 < 64 && content[figure_pos - 1].team != content[knight_beat_point2 - 1].team)
+									{
+										if((key == "n" || key == "s") && figure_pos % 8 == 1)
+										{
+											// Do nothing
+										}
+										else
+										{
+	
+											RenderHighlight(knight_beat_point2, figure_pos);
+										}
+									}
+	
+	
+									continue
+								}
+	
+								
+	
+	
 								if(current_highlight_pos < 1 || current_highlight_pos > 64)
 								{
 									continue
 								}
-
-								
-
+	
 								// continue when the highlight is on your own figures so you cant beat your own figures
 								if(content[figure_pos - 1].team == content[current_highlight_pos - 1].team)
 								{
 									console.log(content[figure_pos - 1].team)
-
-									break
+	
+									continue
 								}
-
-								// you can only beat one figure in each direction
-								if(highlight_on_figure)
-								{
-									break;
-								}
-
-
-
-								// check that there is no row overflow by east and west direction
+	
+	
 								if(key == "e" || key == "w")
 								{
 	
@@ -327,357 +550,148 @@ function App() {
 											continue
 										}
 									}
-
 	
-									if(current_highlight_pos % 8 == 0 ||current_highlight_pos % 8 == 1)
+								}
+	
+	
+								// on start the pawn can move 2 fields
+	
+								if(content[figure_pos - 1].is_first_move && content[figure_pos - 1].type == "pawn")
+								{
+									let second_highlight_pawn_pos = current_highlight_pos - 8;
+	
+									if(second_highlight_pawn_pos > 0 && content[figure_pos - 1].team != content[second_highlight_pawn_pos - 1].team)
 									{
-										const new_html = new_content.find(item => item.id === current_highlight_pos)
-	
+										const second_highlight = new_content.find(item => item.id === second_highlight_pawn_pos)
 	
 										// check if a figure is on the field
-										if (new_html.html[0].type == "button")
+										if (second_highlight.html[0].type == "button")
 										{
-											new_html.html = [
-												<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+											second_highlight.html = [
+												<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, second_highlight_pawn_pos)}>
 													
 													<img className='highlight-image' src='/images/highlight.svg'></img>
 													
-													<img className='figure-image' src={figure_dict[new_html.type].image}></img>
+													<img className='figure-image' src={figure_dict[second_highlight.type].image}></img>
 												</button>
 										
 											];
 										}
 										else
 										{
-	
-											new_html.html.push(
-											<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
+				
+											second_highlight.html.push(
+											<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, second_highlight_pawn_pos)}>
 												<img className='highlight-image' src='/images/highlight.svg'></img>
 											</button>);
 										}
-	
-										new_html.is_highlight = true;
-	
-	
-										break
+				
+										second_highlight.is_highlight = true;
 									}
 								}
 	
 	
+								// pawn can beat diagonal
+								if(content[figure_pos - 1].type == "pawn")
+								{
+									// pawn cant beat the figure straight ahead
+									if(content[current_highlight_pos - 1].team != "none")
+									{
+										continue
+									}
+	
+									let pawn_beat_point1 = figure_pos - 9;
+									let pawn_beat_point2 = figure_pos - 7; 
+	
+	
+									if(pawn_beat_point1 > 0 && content[pawn_beat_point1 - 1].team == enemy_team)
+									{
+										// preventing row overflow
+										if(figure_pos % 8 != 1)
+										{
+	
+											const pawn_beat1 = new_content.find(item => item.id === pawn_beat_point1)
+		
+											pawn_beat1.html = [
+												<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point1)}>
+													
+													<img className='highlight-image' src='/images/highlight.svg'></img>
+													
+													<img className='figure-image' src={figure_dict[pawn_beat1.type].image}></img>
+												</button>
+										
+											];
+		
+											pawn_beat1.is_highlight = true;
+										}
+	
+									}
+	
+									if(pawn_beat_point2 > 0 && content[pawn_beat_point2 - 1].team == enemy_team)
+									{
+										// preventing row overflow
+										if(figure_pos % 8 != 0)
+										{
+											const pawn_beat2 = new_content.find(item => item.id === pawn_beat_point2)
+		
+											pawn_beat2.html = [
+												<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point2)}>
+													
+													<img className='highlight-image' src='/images/highlight.svg'></img>
+													
+													<img className='figure-image' src={figure_dict[pawn_beat2.type].image}></img>
+												</button>
+										
+											];
+		
+											pawn_beat2.is_highlight = true;
+										}
+	
+									}
+								}
+	
+								
+	
+		
 								const new_html = new_content.find(item => item.id === current_highlight_pos)
-	
-	
+		
+		
 								// check if a figure is on the field
 								if (new_html.html[0].type == "button")
 								{
 									new_html.html = [
 										<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 											
-											<img className='highlight-image' src='/images/highlight.svg'></img>
+											<img className='highlight-image' src={figure_dict[new_html.type].image}></img>
 											
-											<img className='figure-image' src={figure_dict[new_html.type].image}></img>
+											<img className='figure-image' src='/images/Bauer.svg'></img>
 										</button>
 								
 									];
 								}
 								else
 								{
+		
 									new_html.html.push(
 									<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 										<img className='highlight-image' src='/images/highlight.svg'></img>
 									</button>);
 								}
-	
+		
 								new_html.is_highlight = true;
-
-								if(content[current_highlight_pos - 1].type != "none")
-								{
-									highlight_on_figure = true;
-								}
 							}
+		
 						}
-					}
-					else
-					{
-						
-						if (this_figure_dict[key] != 0)
-						{
-							
-							const current_highlight_pos = this_figure_dict[key] * calc_dict[key] + figure_pos;
-
-
-							// special movement for the knight
-							if(content[figure_pos - 1].type == "knight")
-							{
-
-								let knight_beat_point1 = 0;
-
-								let knight_beat_point2 = 0;
-
-								if(key == "n" ||key == "s")
-								{
-									knight_beat_point1 = current_highlight_pos + 1;
-
-									knight_beat_point2 = current_highlight_pos - 1;
-								}
-								else if (key == "w" ||key == "e")
-								{
-									knight_beat_point1 = current_highlight_pos + 8;
-
-									knight_beat_point2 = current_highlight_pos - 8;
-								}
-
-
-								// prevent row overflow
-								if(figure_pos % 8 == 7 && key == "e")
-								{
-									continue
-								}
-								if(figure_pos % 8 == 2 && key == "w")
-								{
-									continue
-								}
-
-								if(figure_pos % 8 == 0 && key == "e")
-								{
-									continue
-								}
-								if(figure_pos % 8 == 1 && key == "w")
-								{
-									continue
-								}
-
-
-								if(knight_beat_point1 > 0 && knight_beat_point1 < 64 && content[figure_pos - 1].team != content[knight_beat_point1 - 1].team)
-								{
-									if((key == "n" || key == "s") && figure_pos % 8 == 0)
-									{
-										// Do nothing
-									}
-									else
-									{
-
-										RenderHighlight(knight_beat_point1, figure_pos);
-									}
-									
-								}
-								if(knight_beat_point2 > 0 && knight_beat_point2 < 64 && content[figure_pos - 1].team != content[knight_beat_point2 - 1].team)
-								{
-									if((key == "n" || key == "s") && figure_pos % 8 == 1)
-									{
-										// Do nothing
-									}
-									else
-									{
-
-										RenderHighlight(knight_beat_point2, figure_pos);
-									}
-								}
-
-
-								continue
-							}
-
-							
-
-
-							if(current_highlight_pos < 1 || current_highlight_pos > 64)
-							{
-								continue
-							}
-
-							// continue when the highlight is on your own figures so you cant beat your own figures
-							if(content[figure_pos - 1].team == content[current_highlight_pos - 1].team)
-							{
-								console.log(content[figure_pos - 1].team)
-
-								continue
-							}
-
-
-							if(key == "e" || key == "w")
-							{
-
-								// MAth.floor rundet immer ab!
-								if(Math.floor(figure_pos / 8) != Math.floor(current_highlight_pos / 8))
-								{
-									if(figure_pos % 8 == 0 && current_highlight_pos < figure_pos && current_highlight_pos % 8 != 0)
-									{
-										
-									}
-									else if(current_highlight_pos % 8 != 0)
-									{
-										continue
-									}
-									else if(figure_pos % 8 == 0 && current_highlight_pos % 8 == 0)
-									{
-										continue
-									}
-									
-								}
-								else if(current_highlight_pos % 8 == 0 || figure_pos % 8 == 0)
-								{
-									continue
-								}
-							}
-
-							if(key == "ne" || key == "se" || key == "sw" || key == "nw")
-							{
-								if(figure_pos % 8 == 0)
-								{
-									if(key == "ne" || key == "se")
-									{
-										continue
-									}
-								}
-								else if(figure_pos % 8 == 1)
-								{
-									if(key == "nw" || key == "sw")
-									{
-										continue
-									}
-								}
-
-							}
-
-
-							// on start the pawn can move 2 fields
-
-							if(content[figure_pos - 1].is_first_move && content[figure_pos - 1].type == "pawn")
-							{
-								let second_highlight_pawn_pos = current_highlight_pos - 8;
-
-								if(second_highlight_pawn_pos > 0 && content[figure_pos - 1].team != content[second_highlight_pawn_pos - 1].team)
-								{
-									const second_highlight = new_content.find(item => item.id === second_highlight_pawn_pos)
-
-									// check if a figure is on the field
-									if (second_highlight.html[0].type == "button")
-									{
-										second_highlight.html = [
-											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, second_highlight_pawn_pos)}>
-												
-												<img className='highlight-image' src='/images/highlight.svg'></img>
-												
-												<img className='figure-image' src={figure_dict[second_highlight.type].image}></img>
-											</button>
-									
-										];
-									}
-									else
-									{
-			
-										second_highlight.html.push(
-										<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, second_highlight_pawn_pos)}>
-											<img className='highlight-image' src='/images/highlight.svg'></img>
-										</button>);
-									}
-			
-									second_highlight.is_highlight = true;
-								}
-							}
-
-
-							// pawn can beat diagonal
-							if(content[figure_pos - 1].type == "pawn")
-							{
-								// pawn cant beat the figure straight ahead
-								if(content[current_highlight_pos - 1].team != "none")
-								{
-									continue
-								}
-
-								let pawn_beat_point1 = figure_pos - 9;
-								let pawn_beat_point2 = figure_pos - 7; 
-
-
-								if(pawn_beat_point1 > 0 && content[pawn_beat_point1 - 1].team == enemy_team)
-								{
-									// preventing row overflow
-									if(figure_pos % 8 != 1)
-									{
-
-										const pawn_beat1 = new_content.find(item => item.id === pawn_beat_point1)
-	
-										pawn_beat1.html = [
-											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point1)}>
-												
-												<img className='highlight-image' src='/images/highlight.svg'></img>
-												
-												<img className='figure-image' src={figure_dict[pawn_beat1.type].image}></img>
-											</button>
-									
-										];
-	
-										pawn_beat1.is_highlight = true;
-									}
-
-								}
-
-								if(pawn_beat_point2 > 0 && content[pawn_beat_point2 - 1].team == enemy_team)
-								{
-									// preventing row overflow
-									if(figure_pos % 8 != 0)
-									{
-										const pawn_beat2 = new_content.find(item => item.id === pawn_beat_point2)
-	
-										pawn_beat2.html = [
-											<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, pawn_beat_point2)}>
-												
-												<img className='highlight-image' src='/images/highlight.svg'></img>
-												
-												<img className='figure-image' src={figure_dict[pawn_beat2.type].image}></img>
-											</button>
-									
-										];
-	
-										pawn_beat2.is_highlight = true;
-									}
-
-								}
-							}
-
-							
-
-	
-							const new_html = new_content.find(item => item.id === current_highlight_pos)
-	
-	
-							// check if a figure is on the field
-							if (new_html.html[0].type == "button")
-							{
-								new_html.html = [
-									<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
-										
-										<img className='highlight-image' src={figure_dict[new_html.type].image}></img>
-										
-										<img className='figure-image' src='/images/Bauer.svg'></img>
-									</button>
-							
-								];
-							}
-							else
-							{
-	
-								new_html.html.push(
-								<button className='highlight-button'  onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
-									<img className='highlight-image' src='/images/highlight.svg'></img>
-								</button>);
-							}
-	
-							new_html.is_highlight = true;
-						}
-	
 					}
 				}
 			}
+	
+	
+	
+			setContent(new_content);
+	
+			active_figure = figure_pos;
 		}
-
-
-
-		setContent(new_content);
-
-		active_figure = figure_pos;
 	}
 
 
@@ -980,6 +994,8 @@ function App() {
 		let turn_dict = {team:own_team,type:type,new_pos:new_pos,old_pos:old_pos}
 
 		websockett.send(JSON.stringify(turn_dict));
+
+		your_turn = false;
 
 	}
 
