@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="183.582mm"
+   height="183.582mm"
+   viewBox="0 0 183.582 183.582"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="Pawn2.svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#505050"
+     bordercolor="#ffffff"
+     borderopacity="1"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="1"
+     inkscape:document-units="mm"
+     showgrid="false"
+     inkscape:snap-bbox="true"
+     inkscape:snap-bbox-midpoints="true"
+     inkscape:snap-bbox-edge-midpoints="true"
+     inkscape:bbox-nodes="true"
+     inkscape:bbox-paths="true"
+     inkscape:snap-global="true"
+     height="183.582mm"
+     inkscape:zoom="0.51906082"
+     inkscape:cx="31.788182"
+     inkscape:cy="399.76048"
+     inkscape:window-width="1920"
+     inkscape:window-height="1009"
+     inkscape:window-x="1432"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="Ebene 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       id="rect1674"
+       style="fill:#000000;stroke:#000000;stroke-width:0.349999"
+       d="m 89.454083,0.17544951 a 36.37395,36.734387 0 0 0 -36.37401,36.73418749 36.37395,36.734387 0 0 0 16.295648,30.6126 43.184698,95.087603 0 0 1 -0.431499,7.20628 45.955703,6.6680825 0 0 0 -25.445476,5.96398 45.955703,6.6680825 0 0 0 24.23573,5.87406 A 43.184698,95.087603 0 0 1 30.375,154.25286 v 29.15377 H 89.814783 V 87.358757 a 45.955703,6.6680825 0 0 0 0.34985,-0.002 v 96.049423 h 59.439787 v -29.15377 a 43.184698,95.087603 0 0 1 -37.36981,-67.772603 45.955703,6.6680825 0 0 0 23.17533,-5.78776 45.955703,6.6680825 0 0 0 -24.37009,-5.88698 43.184698,95.087603 0 0 1 -0.47904,-8.00416 36.37395,36.734387 0 0 0 15.26728,-29.89172 A 36.37395,36.734387 0 0 0 89.454083,0.17499951 Z m 0.71055,73.44150749 v 0.40825 a 45.955703,6.6680825 0 0 0 -0.34985,-5.2e-4 v -0.39429 a 36.37395,36.734387 0 0 0 0.34985,-0.0134 z" />
+  </g>
+</svg>

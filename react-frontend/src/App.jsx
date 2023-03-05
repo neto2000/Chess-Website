@@ -172,6 +172,8 @@ function App() {
 
 		const image_location = figure_dict[type].image;
 
+		console.log(your_image_dir + image_location);
+
 		new_html.html = [
 		<button className='figure-button' onClick={PlaceHighlights.bind(this, field_pos)}>
 			<img className='figure-image' src={your_image_dir + image_location}></img>
