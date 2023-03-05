@@ -15,6 +15,10 @@ let enemy_team;
 
 let your_turn = false;
 
+let your_image_dir;
+
+let enemy_image_dir;
+
 
 // start websocket
 const websockett = new WebSocket("ws://127.0.0.1:9000/ws");
@@ -40,20 +44,6 @@ function App() {
 		})();
 		
 	}, [])
-
-
-
-
-	
-	
-	
-
-	
-
-
-
-
-
 
 
 	// create content State with empty HTML tag
@@ -127,6 +117,10 @@ function App() {
 
 					enemy_team = "black";
 
+					your_image_dir = "./images/white/";
+
+					enemy_image_dir = "./images/black/";
+
 					your_turn = true;
 				}
 				else if(e.data == "black")
@@ -134,6 +128,10 @@ function App() {
 					own_team = e.data;
 
 					enemy_team = "white";
+
+					your_image_dir = "./images/black/";
+
+					enemy_image_dir = "./images/white/";
 
 					your_turn = false;
 
@@ -176,7 +174,7 @@ function App() {
 
 		new_html.html = [
 		<button className='figure-button' onClick={PlaceHighlights.bind(this, field_pos)}>
-			<img className='figure-image' src={image_location}></img>
+			<img className='figure-image' src={your_image_dir + image_location}></img>
 		</button>
 
 		];
@@ -355,7 +353,7 @@ function App() {
 														
 														<img className='highlight-image' src='/images/highlight.svg'></img>
 														
-														<img className='figure-image' src={figure_dict[new_html.type].image}></img>
+														<img className='figure-image' src={enemy_image_dir + figure_dict[new_html.type].image}></img>
 													</button>
 											
 												];
@@ -388,7 +386,7 @@ function App() {
 												
 												<img className='highlight-image' src='/images/highlight.svg'></img>
 												
-												<img className='figure-image' src={figure_dict[new_html.type].image}></img>
+												<img className='figure-image' src={enemy_image_dir + figure_dict[new_html.type].image}></img>
 											</button>
 									
 										];
@@ -572,7 +570,7 @@ function App() {
 													
 													<img className='highlight-image' src='/images/highlight.svg'></img>
 													
-													<img className='figure-image' src={figure_dict[second_highlight.type].image}></img>
+													<img className='figure-image' src={enemy_image_dir + figure_dict[second_highlight.type].image}></img>
 												</button>
 										
 											];
@@ -617,7 +615,7 @@ function App() {
 													
 													<img className='highlight-image' src='/images/highlight.svg'></img>
 													
-													<img className='figure-image' src={figure_dict[pawn_beat1.type].image}></img>
+													<img className='figure-image' src={enemy_image_dir + figure_dict[pawn_beat1.type].image}></img>
 												</button>
 										
 											];
@@ -639,7 +637,7 @@ function App() {
 													
 													<img className='highlight-image' src='/images/highlight.svg'></img>
 													
-													<img className='figure-image' src={figure_dict[pawn_beat2.type].image}></img>
+													<img className='figure-image' src={enemy_image_dir + figure_dict[pawn_beat2.type].image}></img>
 												</button>
 										
 											];
@@ -662,7 +660,7 @@ function App() {
 									new_html.html = [
 										<button className='figure-button' onClick={MoveToField.bind(this, figure_pos, current_highlight_pos)}>
 											
-											<img className='highlight-image' src={figure_dict[new_html.type].image}></img>
+											<img className='highlight-image' src={enemy_image_dir + figure_dict[new_html.type].image}></img>
 											
 											<img className='figure-image' src='/images/Bauer.svg'></img>
 										</button>
@@ -712,7 +710,7 @@ function App() {
 					
 					<img className='highlight-image' src='/images/highlight.svg'></img>
 					
-					<img className='figure-image' src={figure_dict[content[position - 1].type].image}></img>
+					<img className='figure-image' src={enemy_image_dir + figure_dict[content[position - 1].type].image}></img>
 				</button>
 		
 			];
@@ -757,7 +755,7 @@ function App() {
 				{
 					new_html.html = [
 						<button className='figure-button'>
-							<img className='figure-image' src={figure_dict[content[i - 1].type].image}></img>
+							<img className='figure-image' src={your_image_dir + figure_dict[content[i - 1].type].image}></img>
 						</button>				
 					];
 
@@ -780,7 +778,7 @@ function App() {
 		
 		new_html.html = [
 			<button className='figure-button' onClick={PlaceHighlights.bind(this, new_pos)}>
-				<img className='figure-image' src={image_pos}></img>
+				<img className='figure-image' src={your_image_dir + image_pos}></img>
 			</button>				
 		];
 
@@ -817,7 +815,7 @@ function App() {
 
 		new_html.html = [
 		<button className='figure-button'>
-			<img className='figure-image' src={image_location}></img>
+			<img className='figure-image' src={enemy_image_dir + image_location}></img>
 		</button>
 
 		];
@@ -846,7 +844,7 @@ function App() {
 		
 		new_html.html = [
 			<button className='figure-button'>
-				<img className='figure-image' src={image_pos}></img>
+				<img className='figure-image' src={enemy_image_dir + image_pos}></img>
 			</button>				
 		];
 

@@ -193,19 +193,19 @@ async fn get_figure_dict() -> impl IntoResponse
 
     //every special move is hard coded into JavaScript
 
-    let pawn = json!({"start-pos": 5, "image": "./images/Bauer.svg", "n":1, "ne":0, "e":0,"se":0,"s":0,"sw":0,"w":0,"nw":0 , "auto-fill":false});
+    let pawn = json!({"start-pos": 5, "image": "Pawn.svg", "n":1, "ne":0, "e":0,"se":0,"s":0,"sw":0,"w":0,"nw":0 , "auto-fill":false});
 
-    let queen = json!({"start-pos": 5, "image": "./images/Bauer.svg", "n":8, "ne":8, "e":8,"se":8,"s":8,"sw":8,"w":8,"nw":8 , "auto-fill":true});
+    let queen = json!({"start-pos": 5, "image": "Bauer.svg", "n":8, "ne":8, "e":8,"se":8,"s":8,"sw":8,"w":8,"nw":8 , "auto-fill":true});
 
-    let king = json!({"start-pos": 5, "image": "./images/Bauer.svg", "n":1, "ne":1, "e":1,"se":1,"s":1,"sw":1,"w":1,"nw":1 , "auto-fill":false});
+    let king = json!({"start-pos": 5, "image": "Bauer.svg", "n":1, "ne":1, "e":1,"se":1,"s":1,"sw":1,"w":1,"nw":1 , "auto-fill":false});
 
-    let bishop = json!({"start-pos": 5, "image": "./images/Bauer.svg", "n":0, "ne":8, "e":0,"se":8,"s":0,"sw":8,"w":0,"nw":8 , "auto-fill":true});
+    let bishop = json!({"start-pos": 5, "image": "Bauer.svg", "n":0, "ne":8, "e":0,"se":8,"s":0,"sw":8,"w":0,"nw":8 , "auto-fill":true});
 
 
     // !! implement that it is not 2 in one direction but two in the direction and 1 left and right (in JS) !!
-    let knight = json!({"start-pos": 5, "image": "./images/Bauer.svg", "n":2, "ne":0, "e":2,"se":0,"s":2,"sw":0,"w":2,"nw":0 , "auto-fill":false});
+    let knight = json!({"start-pos": 5, "image": "Bauer.svg", "n":2, "ne":0, "e":2,"se":0,"s":2,"sw":0,"w":2,"nw":0 , "auto-fill":false});
 
-    let rook = json!({"start-pos": 5, "image": "./images/Bauer.svg", "n":8, "ne":0, "e":8,"se":0,"s":8,"sw":0,"w":8,"nw":0 , "auto-fill":true});
+    let rook = json!({"start-pos": 5, "image": "Bauer.svg", "n":8, "ne":0, "e":8,"se":0,"s":8,"sw":0,"w":8,"nw":0 , "auto-fill":true});
 
     (StatusCode::OK, Json(json!({"pawn": pawn, "king": king, "queen": queen, "bishop": bishop, "knight": knight, "rook": rook})))
 }
