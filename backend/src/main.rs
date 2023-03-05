@@ -91,11 +91,36 @@ async fn handle_socket(mut socket: WebSocket, state: Arc<AppState>)
 {
     let (mut sender, mut receiver) = socket.split();
 
+
+    while let Some(Ok(team_message)) = receiver.next().await
+    {
+        if let Message::Text(team) = team_message
+        {
+            if team == "which team"
+            {
+
+                let msg = assign_team(&state);
+
+                println!("team: {}", msg);
+
+                let _ = sender.send(Message::Text(msg)).await;
+
+               break;
+                
+            }
+            
+        }
+    }
+
+
+
+
     let mut rx = state.tx.subscribe();
 
 
     let mut send_task = tokio::spawn(async move{
         while let Ok(msg) = rx.recv().await {
+
             if sender.send(Message::Text(msg)).await.is_err() 
             {
                 break;
@@ -109,42 +134,13 @@ async fn handle_socket(mut socket: WebSocket, state: Arc<AppState>)
 
         while let Some(Ok(Message::Text(message))) = receiver.next().await 
         {   
-            if message == "which team"
-            {
-
-                let mut msg = String::from("none");
-
-                let mut black = state.black.lock().unwrap();
-                let mut white = state.white.lock().unwrap();
-                
-
-                if *black == false
-                {
-
-                    *black = true.to_owned();
-
-                    msg = String::from("black");
-                }
-                else if *white == false
-                {
-                    msg = String::from("white");
-
-                    *white = true.to_owned();
-                }
-
-                println!("msg: {}", msg);
-
-                let _ = tx.send(msg);
-            }
-            else
-            {
-
-                println!("message: {}" , message);
-        
-                let msg = message;
-                
-                let _ = tx.send(msg);
-            }
+            
+            println!("message: {}" , message);
+    
+            let msg = message;
+            
+            let _ = tx.send(msg);
+            
 
             
         }
@@ -156,6 +152,33 @@ async fn handle_socket(mut socket: WebSocket, state: Arc<AppState>)
     };
 
 
+}
+
+
+fn assign_team(state: &AppState) -> String
+{
+    let mut black = state.black.lock().unwrap();
+    let mut white = state.white.lock().unwrap();
+    
+    let mut team: String = String::new();
+
+    if *black == false
+    {
+
+        *black = true.to_owned();
+
+        team = String::from("black");
+    }
+    else if *white == false
+    {
+
+
+        *white = true.to_owned();
+
+        team = String::from("white");
+    }
+
+    return team;
 }
 
 

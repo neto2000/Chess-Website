@@ -116,7 +116,7 @@ function App() {
 		return new Promise((resolve, reject) => {
 
 			websockett.onmessage = function(e) {
-				console.log(e.data);
+				console.log("your team: " + e.data);
 			
 				if(e.data == "white")
 				{
@@ -139,12 +139,12 @@ function App() {
 				{
 					let turn_dict = JSON.parse(e.data);
 				
-					console.log(turn_dict);
-				
 				
 					if(turn_dict.team == enemy_team)
 					{
 						console.log("execute move");
+
+						MoveEnemyFigure(turn_dict.type, turn_dict.old_pos, turn_dict.new_pos);
 					}
 				}
 				resolve()
@@ -784,7 +784,12 @@ function App() {
 
 		old_html.is_first_move = false;
 
+		send_turn(new_html.type, old_pos, new_pos);
+
+
+
 		setContent(new_content);
+
 
 	}
 
@@ -806,6 +811,44 @@ function App() {
 		new_html.type = type
 		new_html.team = team
 
+
+		setContent(new_content);
+	}
+	function MoveEnemyFigure(type, old_pos, new_pos)
+	{
+
+		old_pos = Math.abs(old_pos - 65);
+		new_pos = Math.abs(new_pos - 65);
+
+
+
+		const new_content = [...content]
+
+		const new_html = new_content.find(item => item.id === new_pos)
+
+		const image_pos = figure_dict[type].image;
+
+		console.log(image_pos)
+		
+		new_html.html = [
+			<button className='figure-button'>
+				<img className='figure-image' src={image_pos}></img>
+			</button>				
+		];
+
+		new_html.type = content[old_pos - 1].type;
+		new_html.team = content[old_pos - 1].team;
+		new_html.is_first_move = false;
+
+		const old_html = new_content.find(item => item.id === old_pos)
+
+		old_html.html = [<></>];
+
+		old_html.type = "none";
+
+		old_html.team = "none"
+
+		old_html.is_first_move = false;
 
 		setContent(new_content);
 	}
@@ -931,12 +974,12 @@ function App() {
 		figure_dict = data;    
 	}
 
-	function send_turn()
+	function send_turn(type, old_pos, new_pos)
 	{
 
-		let test = {team:own_team,turn:"2b"}
+		let turn_dict = {team:own_team,type:type,new_pos:new_pos,old_pos:old_pos}
 
-		websockett.send(JSON.stringify(test));
+		websockett.send(JSON.stringify(turn_dict));
 
 	}
 
@@ -956,7 +999,6 @@ function App() {
 			</div>
 
 			<button onClick={StartPlaceOwnFigures}>Place</button>
-			<button onClick={send_turn}>Send Msg</button>
 			<button onClick={GameOverScreen.bind(this, true)}>Game Over Screen</button>
 		</div>
 	)
