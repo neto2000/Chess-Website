@@ -12,6 +12,8 @@ let active_figure = 0;
 let own_team;
 let enemy_team;
 
+let king_position = 0;
+
 
 let your_turn = false;
 
@@ -788,6 +790,14 @@ function App() {
 		new_html.team = content[old_pos - 1].team;
 		new_html.is_first_move = false;
 
+
+		if(new_html.type == "king")
+		{
+			king_position = new_pos;
+		}
+
+
+
 		const old_html = new_content.find(item => item.id === old_pos)
 
 		old_html.html = [<></>];
@@ -800,10 +810,12 @@ function App() {
 
 		send_turn(new_html.type, old_pos, new_pos);
 
-
-
+		
+		
+		
 		setContent(new_content);
-
+		
+		IsCheck(king_position)
 
 	}
 
@@ -865,7 +877,157 @@ function App() {
 		old_html.is_first_move = false;
 
 		setContent(new_content);
+
+		IsCheck(king_position)
 	}
+
+
+	function IsCheck(field)
+	{
+		let is_check = false;
+
+		// check for straight checks
+		for(let i = 0; i < 4 && is_check == false; i++)
+		{
+
+			let loop = true
+
+			let current_field = field;
+
+			let iteration = 0;
+
+			while(loop)
+			{
+				// checking north
+				if(i == 0){
+					current_field -= 8;
+
+					if(current_field < 1)
+					{
+						break
+					}
+				}
+				// checking east
+				else if(i == 1){
+					current_field += 1;
+
+					// MAth.floor rundet immer ab!
+					if(Math.floor(field / 8) != Math.floor(current_field / 8))
+					{
+						if(field % 8 == 0 && current_field < field && current_field % 8 != 0)
+						{
+							
+						}
+						else if(current_field % 8 != 0)
+						{
+							break
+						}
+						else if(field % 8 == 0 && current_field % 8 == 0)
+						{
+							break
+						}
+						
+					}
+					else if(current_field % 8 == 0 || field % 8 == 0)
+					{
+						break
+					}
+				}
+				// checking south
+				else if(i == 2){
+					current_field += 8;
+
+					if(current_field > 64)
+					{
+						break;
+					}
+				}
+				// checking west
+				else if(i == 3){
+					current_field -= 1;
+
+					// MAth.floor rundet immer ab!
+					if(Math.floor(field / 8) != Math.floor(current_field / 8))
+					{
+						if(field % 8 == 0 && current_field < field && current_field % 8 != 0)
+						{
+							
+						}
+						else if(current_field % 8 != 0)
+						{
+							break
+						}
+						else if(field % 8 == 0 && current_field % 8 == 0)
+						{
+							break
+						}
+						
+					}
+					else if(current_field % 8 == 0 || field % 8 == 0)
+					{
+						break
+					}
+				}
+
+				iteration += 1;
+
+
+
+				if(content[current_field - 1].team == own_team)
+				{
+					console.log("own team")
+
+					break;
+				}
+				else if(content[current_field - 1].type == "rook" || content[current_field - 1].type == "queen")
+				{
+					is_check = true;
+
+					console.log("queen/rook: " + current_field)
+
+					break;
+				}
+				else if(content[current_field - 1].type == "king")
+				{
+					if(iteration == 1)
+					{
+						is_check = true;
+
+						console.log("king")
+
+						break;
+					}
+					else
+					{
+						console.log("blocked by king")
+
+						break;
+					}
+				}
+				else if(content[current_field - 1].team == enemy_team)
+				{
+					console.log("blocked")
+
+					break;
+				}
+
+				
+
+
+			}
+		}
+
+		if(is_check)
+		{
+			console.log("check")
+		}
+		else
+		{
+			console.log("blocked")
+		}
+
+	}
+
 
 	function StartPlaceOwnFigures()
 	{
@@ -889,11 +1051,15 @@ function App() {
 		{
 			PlaceFigure(60, "king", own_team);
 			PlaceFigure(61, "queen", own_team);
+
+			king_position = 60;
 		}
 		else if(own_team == "white")
 		{
-			PlaceFigure(61, "queen", own_team);
-			PlaceFigure(60, "king", own_team);
+			PlaceFigure(60, "queen", own_team);
+			PlaceFigure(61, "king", own_team);
+
+			king_position = 61;
 		}
 
 
