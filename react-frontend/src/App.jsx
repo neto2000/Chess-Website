@@ -1192,6 +1192,58 @@ function App() {
 
 		}
 
+		let knight_add = [-15, -6, 10, 17, 15, 6, -10, -17]
+
+		for(let i = 0; i < knight_add.length && is_check == false; i++)
+		{
+			if(i == 0 || i == 7)
+			{
+				if(Math.ceil((field + knight_add[i]) / 8) != Math.ceil(field / 8) - 2)
+				{
+					continue
+				}
+
+			}
+			else if(i == 1 || i == 6)
+			{
+				if(Math.ceil((field + knight_add[i]) / 8) != Math.ceil(field / 8) - 1)
+				{
+					continue
+				}
+			}
+			else if(i == 2 || i == 5)
+			{
+				if(Math.ceil((field + knight_add[i]) / 8) != Math.ceil(field / 8) + 1)
+				{
+					continue
+				}
+			}
+			else if(i == 3 || i == 4)
+			{
+				if(Math.ceil((field + knight_add[i]) / 8) != Math.ceil(field / 8) + 2)
+				{
+					continue
+				}
+			}
+
+
+
+			if(content[(field + knight_add[i]) - 1].team == own_team)
+			{
+				console.log("own team")
+
+				continue
+			}
+			else if(content[(field + knight_add[i]) - 1].type == "knight")
+			{
+				is_check = true;
+
+				console.log("knight")
+
+				break;
+			}
+		}
+
 
 		if(is_check)
 		{
