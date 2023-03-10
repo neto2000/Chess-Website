@@ -1017,6 +1017,145 @@ function App() {
 			}
 		}
 
+		for(let i = 0; i < 4 && is_check == false; i++)
+		{
+			let loop = true
+
+			let current_field = field;
+
+			let iteration = 0;
+
+			while(loop)
+			{
+
+				// checking north east / south east
+				if(i == 0 || i == 1){
+	
+					if(field % 8 == 0)
+					{
+						break
+						
+					}
+	
+					if(i == 0)
+					{
+						current_field -= 7;
+					}
+					else if(i == 1)
+					{
+						current_field += 9;
+					}
+				}
+	
+				// checking south west / north west
+				else if(i == 2 || i == 3)
+				{
+					if(field % 8 == 1)
+					{
+						break	
+					}
+	
+					if(i == 2)
+					{
+						current_field += 7;
+					}
+					else if(i == 3)
+					{
+						current_field -= 9;
+					}
+				}
+	
+				if(current_field % 8 == 0 ||current_field % 8 == 1)
+				{
+
+					iteration += 1;
+	
+					if(content[current_field - 1].team == own_team)
+					{
+						console.log("own team")
+	
+						break;
+					}
+					else if(content[current_field - 1].type == "rook" || content[current_field - 1].type == "queen")
+					{
+						is_check = true;
+	
+						console.log("queen/bishop: " + current_field)
+	
+						break;
+					}
+					else if(content[current_field - 1].type == "king")
+					{
+						if(iteration == 1)
+						{
+							is_check = true;
+
+							console.log("king")
+
+							break;
+						}
+						else
+						{
+							console.log("blocked by king")
+
+							break;
+						}
+					}
+					else if(content[current_field - 1].type == "pawn")
+					{
+						if(iteration == 1 && (i == 0 || i == 1))
+						{
+							is_check = true;
+
+							console.log("pawn")
+
+							break;
+						}
+						else
+						{
+							console.log("blocked by pawn")
+
+							break;
+						}
+					}
+					else if(content[current_field - 1].team == enemy_team)
+					{
+						console.log("blocked")
+	
+						break;
+					}
+	
+	
+					break
+				}
+
+				iteration += 1;
+	
+				if(content[current_field - 1].team == own_team)
+				{
+					console.log("own team")
+	
+					break;
+				}
+				else if(content[current_field - 1].type == "rook" || content[current_field - 1].type == "queen")
+				{
+					is_check = true;
+	
+					console.log("queen/bishop: " + current_field)
+	
+					break;
+				}
+				else if(content[current_field - 1].team == enemy_team)
+				{
+					console.log("blocked")
+
+					break;
+				}
+			}
+
+		}
+
+
 		if(is_check)
 		{
 			console.log("check")
