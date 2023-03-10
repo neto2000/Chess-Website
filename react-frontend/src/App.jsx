@@ -1103,7 +1103,7 @@ function App() {
 					}
 					else if(content[current_field - 1].type == "pawn")
 					{
-						if(iteration == 1 && (i == 0 || i == 1))
+						if(iteration == 1 && (i == 0 || i == 3))
 						{
 							is_check = true;
 
@@ -1145,6 +1145,43 @@ function App() {
 	
 					break;
 				}
+				else if(content[current_field - 1].type == "king")
+					{
+						if(iteration == 1)
+						{
+							is_check = true;
+
+							console.log("king")
+
+							break;
+						}
+						else
+						{
+							console.log("blocked by king")
+
+							break;
+						}
+					}
+					else if(content[current_field - 1].type == "pawn")
+					{
+
+						console.log(iteration + "," + i)
+
+						if(iteration == 1 && (i == 0 || i == 3))
+						{
+							is_check = true;
+
+							console.log("pawn")
+
+							break;
+						}
+						else
+						{
+							console.log("blocked by pawn")
+
+							break;
+						}
+					}
 				else if(content[current_field - 1].team == enemy_team)
 				{
 					console.log("blocked")
