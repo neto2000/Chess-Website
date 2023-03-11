@@ -224,8 +224,8 @@ function App() {
 					else
 					{
 						new_html_test.html = [
-							<button className='figure-button' onClick={PlaceHighlights.bind(this, new_html_test.id)}>
-								<img className='figure-image' src='/images/Bauer.svg'></img>
+							<button className='figure-button'>
+								<img className='figure-image' src={enemy_image_dir + figure_dict[new_html_test.type].image}></img>
 							</button>				
 						];
 					}
