@@ -290,6 +290,12 @@ function App() {
 	
 										break
 									}
+
+									// you cant beat the king!
+									if(content[current_highlight_pos - 1].type == "king")
+									{
+										break
+									}
 	
 									// you can only beat one figure in each direction
 									if(highlight_on_figure)
@@ -471,8 +477,12 @@ function App() {
 										}
 										else
 										{
+											if(content[knight_beat_point1 - 1].type != "king")
+											{
+
+												RenderHighlight(knight_beat_point1, figure_pos);
+											}
 	
-											RenderHighlight(knight_beat_point1, figure_pos);
 										}
 										
 									}
@@ -484,8 +494,11 @@ function App() {
 										}
 										else
 										{
-	
-											RenderHighlight(knight_beat_point2, figure_pos);
+											if(content[knight_beat_point2 - 1].type != "king")
+											{
+												RenderHighlight(knight_beat_point2, figure_pos);
+
+											}
 										}
 									}
 	
@@ -562,7 +575,7 @@ function App() {
 								{
 									let second_highlight_pawn_pos = current_highlight_pos - 8;
 	
-									if(second_highlight_pawn_pos > 0 && content[figure_pos - 1].team != content[second_highlight_pawn_pos - 1].team)
+									if(second_highlight_pawn_pos > 0 && "none" == content[second_highlight_pawn_pos - 1].team)
 									{
 										const second_highlight = new_content.find(item => item.id === second_highlight_pawn_pos)
 	
@@ -596,11 +609,7 @@ function App() {
 								// pawn can beat diagonal
 								if(content[figure_pos - 1].type == "pawn")
 								{
-									// pawn cant beat the figure straight ahead
-									if(content[current_highlight_pos - 1].team != "none")
-									{
-										continue
-									}
+									
 	
 									let pawn_beat_point1 = figure_pos - 9;
 									let pawn_beat_point2 = figure_pos - 7; 
@@ -609,9 +618,9 @@ function App() {
 									if(pawn_beat_point1 > 0 && content[pawn_beat_point1 - 1].team == enemy_team)
 									{
 										// preventing row overflow
-										if(figure_pos % 8 != 1)
+										if(figure_pos % 8 != 1 && content[pawn_beat_point1 - 1].type != "king")
 										{
-	
+										
 											const pawn_beat1 = new_content.find(item => item.id === pawn_beat_point1)
 		
 											pawn_beat1.html = [
@@ -632,8 +641,9 @@ function App() {
 									if(pawn_beat_point2 > 0 && content[pawn_beat_point2 - 1].team == enemy_team)
 									{
 										// preventing row overflow
-										if(figure_pos % 8 != 0)
+										if(figure_pos % 8 != 0 && content[pawn_beat_point2 - 1].type != "king")
 										{
+
 											const pawn_beat2 = new_content.find(item => item.id === pawn_beat_point2)
 		
 											pawn_beat2.html = [
@@ -650,9 +660,18 @@ function App() {
 										}
 	
 									}
+
+									// pawn cant beat the figure straight ahead
+									if(content[current_highlight_pos - 1].team != "none")
+									{
+										continue
+									}
 								}
 	
-								
+								if(content[current_highlight_pos - 1].type == "king")
+								{
+									continue
+								}
 	
 		
 								const new_html = new_content.find(item => item.id === current_highlight_pos)
