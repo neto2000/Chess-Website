@@ -8,6 +8,7 @@ let new_content = []
 let figure_dict;
 
 let active_figure = 0;
+let highlights_active = false;
 
 let own_team;
 let enemy_team;
@@ -239,11 +240,11 @@ function App() {
 	
 			// activefigure: the figure from where the last highlights were spawned
 			// so the will highlights not be spawned twice!
-			if (active_figure == figure_pos)
+			if (highlights_active && active_figure == figure_pos)
 			{
 				console.log("again")
 	
-	
+				highlights_active = false
 			
 			}
 			else
@@ -705,6 +706,9 @@ function App() {
 						}
 					}
 				}
+
+
+				highlights_active = true;
 			}
 	
 	
@@ -712,6 +716,7 @@ function App() {
 			setContent(new_content);
 	
 			active_figure = figure_pos;
+
 		}
 	}
 
