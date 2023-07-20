@@ -120,9 +120,9 @@ function App() {
 
 					enemy_team = "black";
 
-					your_image_dir = "/images/white/";
+					your_image_dir = "/images/white-pixel/";
 
-					enemy_image_dir = "/images/black/";
+					enemy_image_dir = "/images/black-pixel/";
 
 					your_turn = true;
 				}
@@ -132,9 +132,9 @@ function App() {
 
 					enemy_team = "white";
 
-					your_image_dir = "/images/black/";
+					your_image_dir = "/images/black-pixel/";
 
-					enemy_image_dir = "/images/white/";
+					enemy_image_dir = "/images/white-pixel/";
 
 					your_turn = false;
 
