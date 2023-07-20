@@ -1,3 +1,4 @@
 backend/target/
 react-frontend/dist/
 react-frontend/node_modules
+svelte-frontend/node_modules

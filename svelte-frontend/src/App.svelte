@@ -1,0 +1,164 @@
+<script>
+  import Counter from './lib/Counter.svelte'
+
+    let x = 0
+
+    let y = 0
+
+
+
+
+</script>
+
+<main>
+  <div class="board-container">
+    <div class="chess-board">
+      {#each {length: 64} as _, i}
+        {#if (i + Math.floor(i / 8)) % 2 == 0}
+            <div class="square-even"></div>
+        {:else}
+            <div class="square-odd"></div>
+        {/if}
+
+
+      {/each}
+    </div>
+  </div>
+</main>
+
+<style>
+.board-container
+{
+    width: 45%;
+   
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+
+.chess-board
+{
+    display: grid;
+    
+    grid-template-columns: 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5% 12.5%;
+
+}
+
+
+.square-even
+{
+
+
+    aspect-ratio: 1 / 1;
+
+    z-index: 0;
+
+    background-color:rgb(255, 196, 129);
+}
+.square-odd
+{
+
+    aspect-ratio: 1 / 1;
+    
+    z-index: 0;
+
+    background-color:rgb(117, 57, 0);
+}
+
+.figure-image
+{
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: fill;
+}
+
+.highlight-image 
+{
+    max-width: 100%;
+    max-height: 100%;
+
+    object-fit: fill;
+
+    z-index: 2;
+
+    position: absolute;
+
+    top: 0;
+    left: 0;
+}
+
+.figure-button
+{
+   
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    background-color: rgba(0,0,0,0);
+
+    position: relative;
+    
+}
+
+.highlight-button
+{
+   
+    width: 100%;
+    height: 100%;
+
+    border: none;
+
+    background-color: rgba(0,0,0,0);
+
+    position: relative;
+    
+}
+
+.GameOverScreen
+{
+    position: absolute;
+
+    z-index: 5;
+
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    width: 400px;
+    height: 500px;
+}
+
+.overlay-container
+{
+    width: 100%;
+    height: 100%;
+
+    background-color: white;
+
+    border-radius: 10px;
+
+    border: none;
+}
+
+.overlay-text
+{
+    margin: 0 0 0 0;
+
+    font-family: Arial, Helvetica, sans-serif;
+
+    font-size: 40px;
+
+    position: absolute;
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+}
+</style>
