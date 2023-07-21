@@ -1,12 +1,23 @@
 <script>
-  import Counter from './lib/Counter.svelte'
+    import Figure from './lib/Figure.svelte'
 
     let x = 0
 
     let y = 0
+    
+    let fields = [];
 
+    for(let i = 0; i<8; i++) {
+        fields.push([]);
 
+        for(let j = 0; j<8; j++) {
+            fields[i].push({figure: "none"});
+        }
+    }
 
+    fields[7][0].figure = "Pawn";
+    
+    fields = fields;
 
 </script>
 
@@ -15,9 +26,33 @@
     <div class="chess-board">
       {#each {length: 64} as _, i}
         {#if (i + Math.floor(i / 8)) % 2 == 0}
-            <div class="square-even"></div>
+
+            {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
+                
+                <div class="square-even"></div>
+
+            {:else}
+
+                <div class="square-even">
+                    <Figure />
+                </div>
+
+            {/if}
+
+
         {:else}
-            <div class="square-odd"></div>
+            {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
+                
+                <div class="square-odd"></div>
+
+            {:else}
+
+                <div class="square-odd">
+                    <Figure />
+                </div>
+
+            {/if}
+
         {/if}
 
 
