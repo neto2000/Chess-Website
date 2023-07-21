@@ -1,8 +1,89 @@
 <script>
     import Figure from './lib/Figure.svelte'
     import Highlight from './lib/Highlight.svelte'
+    
+    import { onMount } from 'svelte';
+    //import store from './websock.js';
+    import WS from './ws.js'
+
+
+    const ws = WS();
 
     
+    const response = ws.getResponse()
+
+    $: up_response = $response
+
+    $: {
+        console.log(up_response)
+        
+        if (up_response == "black") {
+            set_own_figures("black");
+            set_enemy_figures("white");
+        }
+        else if (up_response == "white") {
+            set_own_figures("white");
+            set_enemy_figures("black");
+
+        }
+        else if (up_response == "none") {
+            game_full_screen = true;
+        }
+        else {
+            // execute move
+        }
+    }
+
+    let join_screen = true;
+
+    let game_full_screen = false;
+
+    function send(message) {
+
+        if(message == "which team") {
+            join_screen = false;
+
+        }
+
+        ws.sendMessage(message)
+    }
+
+
+
+    function set_own_figures(color) {
+        for(let i = 0; i<8; i++) {
+            fields[6][i] = {figure: "Pawn", team: color, move_to: {bool:false}}
+        }
+
+        fields[7][0] = fields[7][7] = {figure: "Rook", team: color, move_to: {bool:false}}
+        fields[7][1] = fields[7][6] = {figure: "Knight", team: color, move_to: {bool:false}}
+        fields[7][2] = fields[7][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
+
+        fields[7][3] = {figure: "Queen", team: color, move_to: {bool:false}}
+        fields[7][4] = {figure: "King", team: color, move_to: {bool:false}}
+
+    }
+
+    function set_enemy_figures(color) {
+        for(let i = 0; i<8; i++) {
+            fields[1][i] = {figure: "Pawn", team: color, move_to: {bool:false}}
+        }
+
+        fields[0][0] = fields[0][7] = {figure: "Rook", team: color, move_to: {bool:false}}
+        fields[0][1] = fields[0][6] = {figure: "Knight", team: color, move_to: {bool:false}}
+        fields[0][2] = fields[0][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
+
+        fields[0][3] = {figure: "Queen", team: color, move_to: {bool:false}}
+        fields[0][4] = {figure: "King", team: color, move_to: {bool:false}}
+
+
+    }
+
+
+
+
+
+
     let fields = [];
 
     for(let i = 0; i<8; i++) {
@@ -20,6 +101,7 @@
 </script>
 
 <main>
+
   <div class="board-container">
     <div class="chess-board">
       {#each {length: 64} as _, i}
@@ -37,7 +119,7 @@
 
                 {:else}
 
-                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} team={fields[Math.floor(i / 8)][i % 8].team} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
 
                 {/if}
 
@@ -56,7 +138,7 @@
 
                 {:else}
 
-                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} team={fields[Math.floor(i / 8)][i % 8].team} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
 
                 {/if}
 
@@ -68,6 +150,19 @@
       {/each}
     </div>
   </div>
+
+
+  <div>
+        {#if join_screen}
+            <div class="GameOverScreen">
+                <div class="overlay-container">
+                    <button class="overlay-text" on:click={() => send("which team")}>Join</button>
+                </div>
+                
+            </div>
+        {/if}
+  </div>
+
 </main>
 
 <style>

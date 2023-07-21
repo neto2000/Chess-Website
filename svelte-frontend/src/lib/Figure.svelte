@@ -2,6 +2,8 @@
   
   export let type;
 
+  export let team;
+
   export let position = {x: 0, y: 0};
 
   export let field_array;
@@ -12,6 +14,8 @@
 
   let clicked = false;
 
+
+  $: image_path = "/images/" + team + "-pixel/";
   
   $: if(move_to.bool) {
     move_to.bool = false;
@@ -66,7 +70,7 @@
 
 
 <button class="figure-button" on:click={button_clicked}>
-  <img class="figure-image" src="/images/black-pixel/Pawn.png" alt=""> 
+  <img class="figure-image" src={image_path + "Pawn.png"} alt=""> 
 </button>
 
 
