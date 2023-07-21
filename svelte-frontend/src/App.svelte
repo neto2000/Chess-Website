@@ -1,9 +1,7 @@
 <script>
     import Figure from './lib/Figure.svelte'
+    import Highlight from './lib/Highlight.svelte'
 
-    let x = 0
-
-    let y = 0
     
     let fields = [];
 
@@ -11,12 +9,12 @@
         fields.push([]);
 
         for(let j = 0; j<8; j++) {
-            fields[i].push({figure: "none"});
+            fields[i].push({figure: "none", move_to: {bool: false}});
         }
     }
 
     fields[7][0].figure = "Pawn";
-    
+
     fields = fields;
 
 </script>
@@ -26,32 +24,43 @@
     <div class="chess-board">
       {#each {length: 64} as _, i}
         {#if (i + Math.floor(i / 8)) % 2 == 0}
+            
 
-            {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
+            <div class="square-even">
+
+                {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
+                    {""} 
                 
-                <div class="square-even"></div>
+                {:else if fields[Math.floor(i / 8)][i % 8].figure == "highlight"}
+                    
+                    <Highlight origin={fields[Math.floor(i/8)][i%8].origin} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields}/>
 
-            {:else}
+                {:else}
 
-                <div class="square-even">
-                    <Figure />
-                </div>
+                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
 
-            {/if}
+                {/if}
+
+            </div>
 
 
         {:else}
-            {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
+            <div class="square-odd">
+
+                {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
+                    {""} 
                 
-                <div class="square-odd"></div>
+                {:else if fields[Math.floor(i / 8)][i % 8].figure == "highlight"}
+                    
+                    <Highlight origin={fields[Math.floor(i/8)][i%8].origin} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields}/>
 
-            {:else}
+                {:else}
 
-                <div class="square-odd">
-                    <Figure />
-                </div>
+                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
 
-            {/if}
+                {/if}
+
+            </div>
 
         {/if}
 
@@ -102,57 +111,6 @@
     z-index: 0;
 
     background-color:rgb(117, 57, 0);
-}
-
-.figure-image
-{
-    max-width: 100%;
-    max-height: 100%;
-
-    object-fit: fill;
-}
-
-.highlight-image 
-{
-    max-width: 100%;
-    max-height: 100%;
-
-    object-fit: fill;
-
-    z-index: 2;
-
-    position: absolute;
-
-    top: 0;
-    left: 0;
-}
-
-.figure-button
-{
-   
-    width: 100%;
-    height: 100%;
-
-    border: none;
-
-    background-color: rgba(0,0,0,0);
-
-    position: relative;
-    
-}
-
-.highlight-button
-{
-   
-    width: 100%;
-    height: 100%;
-
-    border: none;
-
-    background-color: rgba(0,0,0,0);
-
-    position: relative;
-    
 }
 
 .GameOverScreen

@@ -1,16 +1,71 @@
 <script>
   
+  export let type;
 
-  function show_highlight() {
-    console.log("show highlight")
+  export let position = {x: 0, y: 0};
+
+  export let field_array;
+
+  export let move_to = {bool: false}
+
+  $: console.log(move_to)
+
+  let clicked = false;
+
+  
+  $: if(move_to.bool) {
+    move_to.bool = false;
+
+    hide_highlight();
+    
+    console.log(position);
+
+    field_array[position.y][position.x] = {figure: "none"};
+
+    field_array[move_to.pos.y][move_to.pos.x] = {figure: type, move_to: {bool: false}}
+  
   }
+
+
+
+  function button_clicked() {
+
+    if (clicked) {
+      hide_highlight();
+
+      clicked = false;
+    }
+    else {
+      show_highlight();
+
+      clicked = true;
+    }
+  }
+  function show_highlight() {
+
+    console.log("show highlight")
+    if(position.y - 1 >= 0) {
+      field_array[position.y - 1][position.x] = {figure: "highlight", origin: position}
+    }
+  }
+
+
+  function hide_highlight() {
+
+    if(position.y - 1 >= 0) {
+      field_array[position.y - 1][position.x] = {figure: "none"}
+    }
+  }
+
+
+  
 
 </script>
 
 
 
 
-<button class="figure-button" on:click={show_highlight}>
+<button class="figure-button" on:click={button_clicked}>
   <img class="figure-image" src="/images/black-pixel/Pawn.png" alt=""> 
 </button>
 
