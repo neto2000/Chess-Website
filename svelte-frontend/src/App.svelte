@@ -57,9 +57,14 @@
             fields[6][i] = {figure: "Pawn", team: color, move_to: {bool:false}}
         }
 
-        fields[7][0] = fields[7][7] = {figure: "Rook", team: color, move_to: {bool:false}}
-        fields[7][1] = fields[7][6] = {figure: "Knight", team: color, move_to: {bool:false}}
-        fields[7][2] = fields[7][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
+        fields[7][0] = {figure: "Rook", team: color, move_to: {bool:false}}
+        fields[7][7] = {figure: "Rook", team: color, move_to: {bool:false}}
+
+        fields[7][1] = {figure: "Knight", team: color, move_to: {bool:false}}
+        fields[7][6] = {figure: "Knight", team: color, move_to: {bool:false}}
+
+        fields[7][2] = {figure: "Bishop", team: color, move_to: {bool:false}}
+        fields[7][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
 
         fields[7][3] = {figure: "Queen", team: color, move_to: {bool:false}}
         fields[7][4] = {figure: "King", team: color, move_to: {bool:false}}
@@ -71,10 +76,17 @@
             fields[1][i] = {figure: "Pawn", team: color, move_to: {bool:false}}
         }
 
-        fields[0][0] = fields[0][7] = {figure: "Rook", team: color, move_to: {bool:false}}
-        fields[0][1] = fields[0][6] = {figure: "Knight", team: color, move_to: {bool:false}}
-        fields[0][2] = fields[0][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
+        fields[0][0] = {figure: "Rook", team: color, move_to: {bool:false}}
+        fields[0][7] = {figure: "Rook", team: color, move_to: {bool:false}}
 
+        fields[0][1] = {figure: "Knight", team: color, move_to: {bool:false}}
+        fields[0][6] = {figure: "Knight", team: color, move_to: {bool:false}}
+
+        fields[0][2] = {figure: "Bishop", team: color, move_to: {bool:false}}
+        fields[0][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
+
+
+        
         fields[0][3] = {figure: "Queen", team: color, move_to: {bool:false}}
         fields[0][4] = {figure: "King", team: color, move_to: {bool:false}}
 
@@ -92,11 +104,10 @@
         fields.push([]);
 
         for(let j = 0; j<8; j++) {
-            fields[i].push({figure: "none", move_to: {bool: false}});
+            fields[i].push({figure: "none", move_to: {bool: false}, is_highlight: false});
         }
     }
 
-    fields[7][0].figure = "Pawn";
 
     fields = fields;
 
@@ -114,21 +125,43 @@
 
                 {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
                     {""} 
-                
-                {:else if fields[Math.floor(i / 8)][i % 8].figure == "highlight"}
-                    
-                    <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
-                                position={{x: i % 8, y: Math.floor(i/8)}} 
-                                bind:field_array={fields}/>
 
+                    {#if fields[Math.floor(i / 8)][i % 8].is_highlight}
+                        <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
+                                    position={{x: i % 8, y: Math.floor(i/8)}} 
+                                    bind:field_array={fields}/>
+   
+                    {/if}
+                
+        
                 {:else}
 
-                    <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
-                                team={fields[Math.floor(i / 8)][i % 8].team}
-                                bind:current_team={current_team}
-                                position={{x: i % 8, y: Math.floor(i/8)}} 
-                                bind:field_array={fields} 
-                                move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    {#if fields[Math.floor(i / 8)][i % 8].is_highlight}
+                        <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
+                                    position={{x: i % 8, y: Math.floor(i/8)}} 
+                                    bind:field_array={fields}>
+
+
+                            <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
+                                        team={fields[Math.floor(i / 8)][i % 8].team}
+                                        bind:current_team={current_team}
+                                        position={{x: i % 8, y: Math.floor(i/8)}} 
+                                        bind:field_array={fields} 
+                                        move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+
+
+
+                        </Highlight>
+                    {:else}
+                        <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
+                                    team={fields[Math.floor(i / 8)][i % 8].team}
+                                    bind:current_team={current_team}
+                                    position={{x: i % 8, y: Math.floor(i/8)}} 
+                                    bind:field_array={fields} 
+                                    move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    
+
+                    {/if}
 
                 {/if}
 
@@ -140,23 +173,46 @@
 
                 {#if fields[Math.floor(i / 8)][i % 8].figure == "none"}
                     {""} 
-                
-                {:else if fields[Math.floor(i / 8)][i % 8].figure == "highlight"}
-                    
-                    <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
-                                position={{x: i % 8, y: Math.floor(i/8)}} 
-                                bind:field_array={fields}/>
 
+                    {#if fields[Math.floor(i / 8)][i % 8].is_highlight}
+                        <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
+                                    position={{x: i % 8, y: Math.floor(i/8)}} 
+                                    bind:field_array={fields}/>
+   
+                    {/if}
+                
+        
                 {:else}
 
-                    <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
-                                team={fields[Math.floor(i / 8)][i % 8].team}
-                                bind:current_team={current_team}
-                                position={{x: i % 8, y: Math.floor(i/8)}} 
-                                bind:field_array={fields} 
-                                move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    {#if fields[Math.floor(i / 8)][i % 8].is_highlight}
+                        <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
+                                    position={{x: i % 8, y: Math.floor(i/8)}} 
+                                    bind:field_array={fields}>
+
+
+                            <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
+                                        team={fields[Math.floor(i / 8)][i % 8].team}
+                                        bind:current_team={current_team}
+                                        position={{x: i % 8, y: Math.floor(i/8)}} 
+                                        bind:field_array={fields} 
+                                        move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+
+
+
+                        </Highlight>
+                    {:else}
+                        <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
+                                    team={fields[Math.floor(i / 8)][i % 8].team}
+                                    bind:current_team={current_team}
+                                    position={{x: i % 8, y: Math.floor(i/8)}} 
+                                    bind:field_array={fields} 
+                                    move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    
+
+                    {/if}
 
                 {/if}
+
 
             </div>
 

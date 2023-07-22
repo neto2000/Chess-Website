@@ -23,11 +23,9 @@
 
     hide_highlight();
     
-    console.log(position);
+    field_array[position.y][position.x] = {figure: "none", is_highlight: false};
 
-    field_array[position.y][position.x] = {figure: "none"};
-
-    field_array[move_to.pos.y][move_to.pos.x] = {figure: type, team: team, move_to: {bool: false}}
+    field_array[move_to.pos.y][move_to.pos.x] = {figure: type, team: team, move_to: {bool: false}, is_highlight: false}
   
   }
 
@@ -56,7 +54,8 @@
 
     console.log("show highlight")
     if(position.y - 1 >= 0) {
-      field_array[position.y - 1][position.x] = {figure: "highlight", origin: position}
+      field_array[position.y - 1][position.x].is_highlight = true;
+      field_array[position.y - 1][position.x].origin = position;
     }
   }
 
@@ -64,7 +63,8 @@
   function hide_highlight() {
 
     if(position.y - 1 >= 0) {
-      field_array[position.y - 1][position.x] = {figure: "none"}
+
+      field_array[position.y - 1][position.x].is_highlight = false;
     }
   }
 

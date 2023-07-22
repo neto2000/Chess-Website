@@ -11,13 +11,21 @@
 
     field_array = field_array
 
-    console.log("move")
+    console.log("move from ")
+    console.log(origin)
+    console.log(position)
+
+    console.log(field_array[7][6].move_to)
+    console.log(field_array[7][1].move_to)
   }
 
 </script>
 
 <button class="highlight-button" on:click={move}>
   <img class="highlight-image" src="/images/highlight.svg" alt="">
+
+  <slot></slot>
+
 </button>
 
 
@@ -25,7 +33,10 @@
 
   .highlight-button
   {
-     
+
+      display: inline-block;
+
+      z-index: 2;     
       width: 100%;
       height: 100%;
 
