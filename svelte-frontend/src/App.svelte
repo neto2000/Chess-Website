@@ -37,6 +37,9 @@
 
     let game_full_screen = false;
 
+    let current_team = "white";
+
+
     function send(message) {
 
         if(message == "which team") {
@@ -114,11 +117,18 @@
                 
                 {:else if fields[Math.floor(i / 8)][i % 8].figure == "highlight"}
                     
-                    <Highlight origin={fields[Math.floor(i/8)][i%8].origin} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields}/>
+                    <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
+                                position={{x: i % 8, y: Math.floor(i/8)}} 
+                                bind:field_array={fields}/>
 
                 {:else}
 
-                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} team={fields[Math.floor(i / 8)][i % 8].team} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
+                                team={fields[Math.floor(i / 8)][i % 8].team}
+                                bind:current_team={current_team}
+                                position={{x: i % 8, y: Math.floor(i/8)}} 
+                                bind:field_array={fields} 
+                                move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
 
                 {/if}
 
@@ -133,11 +143,18 @@
                 
                 {:else if fields[Math.floor(i / 8)][i % 8].figure == "highlight"}
                     
-                    <Highlight origin={fields[Math.floor(i/8)][i%8].origin} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields}/>
+                    <Highlight  origin={fields[Math.floor(i/8)][i%8].origin} 
+                                position={{x: i % 8, y: Math.floor(i/8)}} 
+                                bind:field_array={fields}/>
 
                 {:else}
 
-                    <Figure type={fields[Math.floor(i / 8)][i % 8].figure} team={fields[Math.floor(i / 8)][i % 8].team} position={{x: i % 8, y: Math.floor(i/8)}} bind:field_array={fields} move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                    <Figure     type={fields[Math.floor(i / 8)][i % 8].figure} 
+                                team={fields[Math.floor(i / 8)][i % 8].team}
+                                bind:current_team={current_team}
+                                position={{x: i % 8, y: Math.floor(i/8)}} 
+                                bind:field_array={fields} 
+                                move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
 
                 {/if}
 

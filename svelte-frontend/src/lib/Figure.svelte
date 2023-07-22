@@ -4,13 +4,14 @@
 
   export let team;
 
+  export let current_team;
+
   export let position = {x: 0, y: 0};
 
   export let field_array;
 
   export let move_to = {bool: false}
 
-  $: console.log(move_to)
 
   let clicked = false;
 
@@ -26,13 +27,19 @@
 
     field_array[position.y][position.x] = {figure: "none"};
 
-    field_array[move_to.pos.y][move_to.pos.x] = {figure: type, move_to: {bool: false}}
+    field_array[move_to.pos.y][move_to.pos.x] = {figure: type, team: team, move_to: {bool: false}}
   
   }
 
 
 
   function button_clicked() {
+    
+    if(current_team != team) {
+      console.log("cur: " + current_team + ", team: " + team);
+      return
+    }
+
 
     if (clicked) {
       hide_highlight();
