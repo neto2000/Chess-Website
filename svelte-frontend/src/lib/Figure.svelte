@@ -102,6 +102,10 @@
       max-width: 100%;
       max-height: 100%;
 
+      width: 90%;
+     
+      image-rendering: pixelated;
+
       object-fit: fill;
   }
 
