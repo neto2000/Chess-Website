@@ -3,7 +3,6 @@
     import Highlight from './lib/Highlight.svelte'
     
     import { onMount } from 'svelte';
-    //import store from './websock.js';
     import WS from './ws.js'
 
 
@@ -12,7 +11,7 @@
     
     const response = ws.getResponse()
 
-    $: up_response = $response
+    $: up_response = $response.toString()
 
     $: {
         console.log(up_response)

@@ -70,7 +70,7 @@
 
 
 <button class="figure-button" on:click={button_clicked}>
-  <img class="figure-image" src={image_path + "Pawn.png"} alt=""> 
+  <img class="figure-image" src={image_path + type + ".png"} alt=""> 
 </button>
 
 
