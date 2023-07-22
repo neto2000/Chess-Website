@@ -42,31 +42,62 @@
     if (clicked) {
       hide_highlight();
 
-      clicked = false;
     }
     else {
       show_highlight();
 
-      clicked = true;
     }
   }
   function show_highlight() {
 
     console.log("show highlight")
-    if(position.y - 1 >= 0) {
-      field_array[position.y - 1][position.x].is_highlight = true;
-      field_array[position.y - 1][position.x].origin = position;
-    }
+    place_highlight(-1,0) 
   }
-
-
   function hide_highlight() {
 
-    if(position.y - 1 >= 0) {
+    delete_highlight(-1,0)
 
-      field_array[position.y - 1][position.x].is_highlight = false;
+  }
+
+
+
+
+  function place_highlight(offset_y, offset_x) {
+
+    if(position.y + offset_y >= 0 && position.y + offset_y <= 8 && position.x + offset_x >= 0 && position.x + offset_x <= 8) {
+
+      if(field_array[position.y + offset_y][position.x + offset_x].team == team) {
+        return
+      }
+
+
+      field_array[position.y + offset_y][position.x + offset_x].is_highlight = true;
+      field_array[position.y + offset_y][position.x + offset_x].origin = position;
+
+
+      clicked = true;
     }
   }
+
+  function delete_highlight(offset_y, offset_x) {
+    
+
+    if(position.y + offset_y >= 0 && position.y + offset_y <= 8 && position.x + offset_x >= 0 && position.x + offset_x <= 8) {
+      
+      if(field_array[position.y + offset_y][position.x + offset_x].team == team) {
+        return
+      }
+
+      field_array[position.y + offset_y][position.x + offset_x].is_highlight = false;
+
+
+      clicked = false;
+    }
+  }
+
+
+
+  
 
 
   
