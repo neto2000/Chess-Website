@@ -9,18 +9,30 @@
     const ws = WS();
 
     
-    const response = ws.getResponse()
+    const raw_response = ws.getResponse()
 
-    $: up_response = $response.toString()
+    let own_team;
+    let enemy_team;
 
-    $: {
-        console.log(up_response)
+    $: response = $raw_response.toString()
+
+    $: check_messages(response);
+
+    function check_messages(up_response) {
+        console.log("message: " + up_response)
         
         if (up_response == "black") {
+            own_team = "black"
+            enemy_team = "white"
+    
+
             set_own_figures("black");
             set_enemy_figures("white");
         }
         else if (up_response == "white") {
+            own_team = "white"
+            enemy_team = "black"
+
             set_own_figures("white");
             set_enemy_figures("black");
 
@@ -28,8 +40,24 @@
         else if (up_response == "none") {
             game_full_screen = true;
         }
+        else if (up_response == 0) {
+            console.log("0")
+        }
         else {
             // execute move
+            
+            let turn_dict = JSON.parse(up_response);
+
+            console.log("move enemy")
+
+            if(own_team != turn_dict.team) {
+
+                console.log(turn_dict);
+
+                fields[turn_dict.old_pos.y][turn_dict.old_pos.x].move_to = {bool: true, pos: turn_dict.new_pos}
+
+                fields = fields
+            }
         }
     }
 
@@ -38,6 +66,30 @@
     let game_full_screen = false;
 
     let current_team = "white";
+
+    let moved = {bool: false, old_pos: {y: 0, x:0}, new_pos: {y: 0, x:0}};
+
+
+
+    $: if(moved.bool) {
+        
+        console.log("moved")
+
+
+        let turn_dict = JSON.stringify({team: own_team,old_pos: {y: Math.abs(moved.old_pos.y - 7), x: Math.abs(moved.old_pos.x - 7)}, new_pos: {y: Math.abs(moved.new_pos.y - 7), x: Math.abs(moved.new_pos.x - 7)}})
+
+        send(turn_dict);
+
+
+        if(current_team == "white"){
+            current_team = "black";
+        }
+        else if(current_team == "black"){
+            current_team = "white";
+        }
+
+        moved.bool = false
+    }
 
 
     function send(message) {
@@ -147,7 +199,9 @@
                                         bind:current_team={current_team}
                                         position={{x: i % 8, y: Math.floor(i/8)}} 
                                         bind:field_array={fields} 
-                                        move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                                        move_to={fields[Math.floor(i / 8)][i % 8].move_to}
+                                        bind:moved={moved}
+                                        own_team={own_team}/>
 
 
 
@@ -158,7 +212,9 @@
                                     bind:current_team={current_team}
                                     position={{x: i % 8, y: Math.floor(i/8)}} 
                                     bind:field_array={fields} 
-                                    move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                                    move_to={fields[Math.floor(i / 8)][i % 8].move_to}
+                                    bind:moved={moved}
+                                    own_team={own_team}/>
                     
 
                     {/if}
@@ -195,7 +251,9 @@
                                         bind:current_team={current_team}
                                         position={{x: i % 8, y: Math.floor(i/8)}} 
                                         bind:field_array={fields} 
-                                        move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                                        move_to={fields[Math.floor(i / 8)][i % 8].move_to}
+                                        bind:moved={moved}
+                                        own_team={own_team}/>
 
 
 
@@ -206,7 +264,9 @@
                                     bind:current_team={current_team}
                                     position={{x: i % 8, y: Math.floor(i/8)}} 
                                     bind:field_array={fields} 
-                                    move_to={fields[Math.floor(i / 8)][i % 8].move_to}/>
+                                    move_to={fields[Math.floor(i / 8)][i % 8].move_to}
+                                    bind:moved={moved}
+                                    own_team={own_team}/>
                     
 
                     {/if}

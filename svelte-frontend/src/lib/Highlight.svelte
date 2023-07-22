@@ -12,11 +12,6 @@
     field_array = field_array
 
     console.log("move from ")
-    console.log(origin)
-    console.log(position)
-
-    console.log(field_array[7][6].move_to)
-    console.log(field_array[7][1].move_to)
   }
 
 </script>

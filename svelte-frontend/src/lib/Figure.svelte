@@ -12,6 +12,9 @@
 
   export let move_to = {bool: false}
 
+  export let moved;
+
+  export let own_team;
 
   let clicked = false;
 
@@ -21,19 +24,23 @@
   $: if(move_to.bool) {
     move_to.bool = false;
 
+    console.log("move figure")
+
     hide_highlight();
     
     field_array[position.y][position.x] = {figure: "none", is_highlight: false};
 
     field_array[move_to.pos.y][move_to.pos.x] = {figure: type, team: team, move_to: {bool: false}, is_highlight: false}
-  
+    
+    moved = {bool: true, old_pos: position, new_pos: move_to.pos};
+
   }
 
 
 
   function button_clicked() {
     
-    if(current_team != team) {
+    if(current_team != team || own_team != team) {
       console.log("cur: " + current_team + ", team: " + team);
       return
     }
