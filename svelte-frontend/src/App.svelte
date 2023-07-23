@@ -106,41 +106,41 @@
 
     function set_own_figures(color) {
         for(let i = 0; i<8; i++) {
-            fields[6][i] = {figure: "Pawn", team: color, move_to: {bool:false}}
+            fields[6][i] = {figure: "Pawn", team: color, move_to: {bool:false}, origin_pos: true}
         }
 
-        fields[7][0] = {figure: "Rook", team: color, move_to: {bool:false}}
-        fields[7][7] = {figure: "Rook", team: color, move_to: {bool:false}}
+        fields[7][0] = {figure: "Rook", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[7][7] = {figure: "Rook", team: color, move_to: {bool:false}, origin_pos: true}
 
-        fields[7][1] = {figure: "Knight", team: color, move_to: {bool:false}}
-        fields[7][6] = {figure: "Knight", team: color, move_to: {bool:false}}
+        fields[7][1] = {figure: "Knight", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[7][6] = {figure: "Knight", team: color, move_to: {bool:false}, origin_pos: true}
 
-        fields[7][2] = {figure: "Bishop", team: color, move_to: {bool:false}}
-        fields[7][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
+        fields[7][2] = {figure: "Bishop", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[7][5] = {figure: "Bishop", team: color, move_to: {bool:false}, origin_pos: true}
 
-        fields[7][3] = {figure: "Queen", team: color, move_to: {bool:false}}
-        fields[7][4] = {figure: "King", team: color, move_to: {bool:false}}
+        fields[7][3] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[7][4] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
 
     }
 
     function set_enemy_figures(color) {
         for(let i = 0; i<8; i++) {
-            fields[1][i] = {figure: "Pawn", team: color, move_to: {bool:false}}
+            fields[1][i] = {figure: "Pawn", team: color, move_to: {bool:false}, origin_pos: true}
         }
 
-        fields[0][0] = {figure: "Rook", team: color, move_to: {bool:false}}
-        fields[0][7] = {figure: "Rook", team: color, move_to: {bool:false}}
+        fields[0][0] = {figure: "Rook", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[0][7] = {figure: "Rook", team: color, move_to: {bool:false}, origin_pos: true}
 
-        fields[0][1] = {figure: "Knight", team: color, move_to: {bool:false}}
-        fields[0][6] = {figure: "Knight", team: color, move_to: {bool:false}}
+        fields[0][1] = {figure: "Knight", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[0][6] = {figure: "Knight", team: color, move_to: {bool:false}, origin_pos: true}
 
-        fields[0][2] = {figure: "Bishop", team: color, move_to: {bool:false}}
-        fields[0][5] = {figure: "Bishop", team: color, move_to: {bool:false}}
+        fields[0][2] = {figure: "Bishop", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[0][5] = {figure: "Bishop", team: color, move_to: {bool:false}, origin_pos: true}
 
 
         
-        fields[0][3] = {figure: "Queen", team: color, move_to: {bool:false}}
-        fields[0][4] = {figure: "King", team: color, move_to: {bool:false}}
+        fields[0][3] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
+        fields[0][4] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
 
 
     }
@@ -156,7 +156,8 @@
         fields.push([]);
 
         for(let j = 0; j<8; j++) {
-            fields[i].push({figure: "none", move_to: {bool: false}, is_highlight: false});
+            fields[i].push({figure: "none", move_to: {bool: false}, is_highlight: false, origin_pos: false
+            });
         }
     }
 
@@ -201,7 +202,8 @@
                                         bind:field_array={fields} 
                                         move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                         bind:moved={moved}
-                                        own_team={own_team}/>
+                                        own_team={own_team}
+                                        enemy_team={enemy_team}/>
 
 
 
@@ -214,7 +216,8 @@
                                     bind:field_array={fields} 
                                     move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                     bind:moved={moved}
-                                    own_team={own_team}/>
+                                    own_team={own_team}
+                                    enemy_team={enemy_team}/>
                     
 
                     {/if}
@@ -253,7 +256,8 @@
                                         bind:field_array={fields} 
                                         move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                         bind:moved={moved}
-                                        own_team={own_team}/>
+                                        own_team={own_team}
+                                        enemy_team={enemy_team}/>
 
 
 
@@ -266,7 +270,8 @@
                                     bind:field_array={fields} 
                                     move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                     bind:moved={moved}
-                                    own_team={own_team}/>
+                                    own_team={own_team}
+                                    enemy_team={enemy_team}/>
                     
 
                     {/if}

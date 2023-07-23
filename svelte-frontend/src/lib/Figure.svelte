@@ -16,6 +16,8 @@
 
   export let own_team;
 
+  export let enemy_team;
+
   let clicked = false;
 
 
@@ -28,9 +30,9 @@
 
     hide_highlight();
     
-    field_array[position.y][position.x] = {figure: "none", is_highlight: false};
+    field_array[position.y][position.x] = {figure: "none", is_highlight: false, origin_pos: false};
 
-    field_array[move_to.pos.y][move_to.pos.x] = {figure: type, team: team, move_to: {bool: false}, is_highlight: false}
+    field_array[move_to.pos.y][move_to.pos.x] = {figure: type, team: team, move_to: {bool: false}, is_highlight: false, origin_pos: false}
     
     moved = {bool: true, old_pos: position, new_pos: move_to.pos};
 
@@ -156,6 +158,37 @@
       place_highlight(-1, 2);
       place_highlight(1, 2);
     }
+    else if(type == "Pawn") {
+      
+      for(let i = -1; i<2; i += 2) {
+        
+        if(position.y - 1 < 0 || position.x + i < 0 || position.x + i > 7) {
+          continue;
+        }
+
+
+        if(field_array[position.y - 1][position.x + i].team == enemy_team) {
+          place_highlight(-1,i);
+        }
+      }
+
+
+      
+
+      if(field_array[position.y - 1][position.x].team != enemy_team) {
+
+        if(field_array[position.y][position.x].origin_pos) {
+          place_highlight(-2,0)
+        }
+
+        place_highlight(-1,0)
+
+
+      }
+
+
+      
+    }
     else {
 
       place_highlight(-1,0) 
@@ -191,13 +224,11 @@
 
       
       // check if highlight is on enemy figure and then return false, so you cant hop over figures
-      if(field_array[position.y + offset_y][position.x + offset_x].team == "white" && team == "black") {
+      if(field_array[position.y + offset_y][position.x + offset_x].team == enemy_team) {
         return false
       }
 
-      if(field_array[position.y + offset_y][position.x + offset_x].team == "black" && team == "white") {
-        return false
-      }
+      
 
       return true;
     }
