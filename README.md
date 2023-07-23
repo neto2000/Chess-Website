@@ -7,7 +7,7 @@
   
   ### Frontend
    - [x] implement turn system with websocket
-   - [ ] compute each position a figure can move to and place a highlight (maybe in extra file)
+   - [x] compute each position a figure can move to and place a highlight (maybe in extra file)
    - [ ] implement check and checkmate
    - [ ] create Game Full Screen
    - [ ] create Gameover Screen
