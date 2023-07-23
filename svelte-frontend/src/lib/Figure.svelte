@@ -58,7 +58,109 @@
   function show_highlight() {
 
     console.log("show highlight")
-    place_highlight(-1,0) 
+
+    if(type == "King") {
+      
+      for(let i = -1; i<2; i++) {
+        place_highlight(-1, i)
+      }
+
+      place_highlight(0, -1)
+      place_highlight(0, 1)
+
+      for(let i = -1; i<2; i++) {
+        place_highlight(1, i)
+      }
+
+    }
+    else if(type == "Rook") {
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(i, 0) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(i, 0) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(0, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(0, i) == false) break;
+      }
+
+    }
+    else if(type == "Bishop") {
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(i, i) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(i, i) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(-i, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(-i, i) == false) break;
+      }
+
+    }
+    else if(type == "Queen") {
+      
+      // diagonal
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(i, i) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(i, i) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(-i, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(-i, i) == false) break;
+      }
+
+
+      // horizontal
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(i, 0) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(i, 0) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(place_highlight(0, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(place_highlight(0, i) == false) break;
+      }
+
+    }
+    else if(type == "Knight") {
+      place_highlight(-2, -1);
+      place_highlight(-2, 1);
+
+      place_highlight(2, -1);
+      place_highlight(2, 1);
+
+      place_highlight(-1, -2);
+      place_highlight(1, -2);
+
+      place_highlight(-1, 2);
+      place_highlight(1, 2);
+    }
+    else {
+
+      place_highlight(-1,0) 
+    }
+
   }
   function hide_highlight() {
 
@@ -70,11 +172,14 @@
 
 
   function place_highlight(offset_y, offset_x) {
+    
+    console.log("PLACE " + offset_y + " " + offset_x)
 
-    if(position.y + offset_y >= 0 && position.y + offset_y <= 8 && position.x + offset_x >= 0 && position.x + offset_x <= 8) {
+    if(position.y + offset_y >= 0 && position.y + offset_y <= 7 && position.x + offset_x >= 0 && position.x + offset_x <= 7) {
 
       if(field_array[position.y + offset_y][position.x + offset_x].team == team) {
-        return
+        console.log("own team!")
+        return false
       }
 
 
@@ -83,6 +188,22 @@
 
 
       clicked = true;
+
+      
+      // check if highlight is on enemy figure and then return false, so you cant hop over figures
+      if(field_array[position.y + offset_y][position.x + offset_x].team == "white" && team == "black") {
+        return false
+      }
+
+      if(field_array[position.y + offset_y][position.x + offset_x].team == "black" && team == "white") {
+        return false
+      }
+
+      return true;
+    }
+    else {
+      console.log("out of bounds!")
+      return false;
     }
   }
 
