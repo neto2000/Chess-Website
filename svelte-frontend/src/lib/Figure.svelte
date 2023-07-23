@@ -197,8 +197,138 @@
   }
   function hide_highlight() {
 
-    delete_highlight(-1,0)
+    if(type == "King") {
+      
+      for(let i = -1; i<2; i++) {
+        delete_highlight(-1, i)
+      }
 
+      delete_highlight(0, -1)
+      delete_highlight(0, 1)
+
+      for(let i = -1; i<2; i++) {
+        delete_highlight(1, i)
+      }
+
+    }
+    else if(type == "Rook") {
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(i, 0) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(i, 0) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(0, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(0, i) == false) break;
+      }
+
+    }
+    else if(type == "Bishop") {
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(i, i) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(i, i) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(-i, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(-i, i) == false) break;
+      }
+
+    }
+    else if(type == "Queen") {
+      
+      // diagonal
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(i, i) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(i, i) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(-i, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(-i, i) == false) break;
+      }
+
+
+      // horizontal
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(i, 0) == false) break;
+      }
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(i, 0) == false) break;
+      }
+
+      for(let i = -1; i > -8; i--) {
+        if(delete_highlight(0, i) == false) break;
+      }
+
+      for(let i = 1; i < 8; i++) {
+        if(delete_highlight(0, i) == false) break;
+      }
+
+    }
+    else if(type == "Knight") {
+      delete_highlight(-2, -1);
+      delete_highlight(-2, 1);
+
+      delete_highlight(2, -1);
+      delete_highlight(2, 1);
+
+      delete_highlight(-1, -2);
+      delete_highlight(1, -2);
+
+      delete_highlight(-1, 2);
+      delete_highlight(1, 2);
+    }
+    else if(type == "Pawn") {
+      
+      for(let i = -1; i<2; i += 2) {
+        
+        if(position.y - 1 < 0 || position.x + i < 0 || position.x + i > 7) {
+          continue;
+        }
+
+
+        if(field_array[position.y - 1][position.x + i].team == enemy_team) {
+          delete_highlight(-1,i);
+        }
+      }
+
+
+      
+
+      if(field_array[position.y - 1][position.x].team != enemy_team) {
+
+        if(field_array[position.y][position.x].origin_pos) {
+          delete_highlight(-2,0)
+        }
+
+        delete_highlight(-1,0)
+
+
+      }
+
+
+      
+    }
+    else {
+
+      delete_highlight(-1,0) 
+    }
   }
 
 
@@ -241,16 +371,27 @@
   function delete_highlight(offset_y, offset_x) {
     
 
-    if(position.y + offset_y >= 0 && position.y + offset_y <= 8 && position.x + offset_x >= 0 && position.x + offset_x <= 8) {
+    if(position.y + offset_y >= 0 && position.y + offset_y <= 7 && position.x + offset_x >= 0 && position.x + offset_x <= 7) {
       
       if(field_array[position.y + offset_y][position.x + offset_x].team == team) {
-        return
+        return false;
       }
 
       field_array[position.y + offset_y][position.x + offset_x].is_highlight = false;
 
 
       clicked = false;
+
+      // check if highlight is on enemy figure and then return false, so you cant hop over figures
+      if(field_array[position.y + offset_y][position.x + offset_x].team == enemy_team) {
+        return false
+      }
+
+
+      return true
+    }
+    else {
+      return false;
     }
   }
 
