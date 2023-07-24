@@ -9,6 +9,9 @@
    - [x] implement turn system with websocket
    - [x] compute each position a figure can move to and place a highlight (maybe in extra file)
    - [ ] implement check and checkmate
+    - [ ] function to check if a position is in Check
+    - [ ] function which calculates all positions which can prevent the Chess
+
    - [ ] create Game Full Screen
    - [ ] create Gameover Screen
    
