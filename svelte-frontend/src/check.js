@@ -1,8 +1,8 @@
+
 let check_list = [false]
 
-
-function check_check(field_array, position, enemy_team, own_team) {
-
+export function check_check(field_array, position, enemy_team, own_team) {
+  
 
   check_position("Pawn", own_team, enemy_team, field_array, {x: position.x -1, y: position.y -1})
 
@@ -98,14 +98,18 @@ function check_check(field_array, position, enemy_team, own_team) {
   check_position("Knight",  own_team, enemy_team, field_array, {x: position.x - 1, y: position.y - 2})
   check_position("Knight",  own_team, enemy_team, field_array, {x: position.x + 1, y: position.y - 2})
 
+
+  console.log(check_list)
 }
 
 
 function check_position(type, own_team,enemy_team, field_array, position) {
 
-  if(position.y < 0 && position.y > 7 && position.x < 0 && position.y > 7) {
+  if(position.y < 0 || position.y > 7 || position.x < 0 || position.x > 7) {
     return false
   }
+
+  //console.log("Y: " + position.y + ", " + "X: " + position.x);
 
   if(field_array[position.y][position.x].team == own_team) {
     console.log("own team!")
@@ -115,14 +119,18 @@ function check_position(type, own_team,enemy_team, field_array, position) {
   if(field_array[position.y][position.x].type == type && field_array[position.y][position.x].team == enemy_team) {
       check_list[0] = true
 
-      check_list.push({type: "King", pos: position})
+      check_list.push({type: type, pos: position})
+
+
+      console.log(check_list)
   }
+
 
   if(field_array[position.y][position.x].team == enemy_team) {
       return false  
   }
 
-      
+
 
   return true;
 
