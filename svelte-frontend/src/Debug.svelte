@@ -1,6 +1,10 @@
 <script>
     import Figure from "./lib/DebugFigure.svelte";
-    import {check_check} from "./check.js"
+    import Check from "./lib/check.svelte";
+
+    let check_comp;
+
+
 
     let own_team = "white";
     let enemy_team = "black";
@@ -17,7 +21,7 @@
         }
     }
 
-    fields[4][5] = {figure: "King", team: own_team, move_to: {bool: false}, is_highlight: false, origin_pos: false}
+    fields[4][4] = {figure: "King", team: own_team, move_to: {bool: false}, is_highlight: false, origin_pos: false}
 
     fields = fields;
 
@@ -46,7 +50,7 @@
     }
 
     function check() {
-        check_check(fields, {x: 5, y: 4}, enemy_team, own_team);
+ //       check_check(fields, {x: 5, y: 4}, enemy_team, own_team);
     }
 
 
@@ -54,11 +58,13 @@
 
 <main>
 
+<Check bind:this={check_comp} />
+
 <input type="text" bind:value={add_type}>
 
 <button on:click={place_figure}>Place</button>
 
-<button on:click={check}>Check</button>
+<button on:click={() => check_comp.check_check(fields, {x: 4, y: 4}, own_team, enemy_team)}>Check</button>
 
 <br>
 
