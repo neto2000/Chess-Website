@@ -150,5 +150,11 @@
 
   }
 
+  export const get_check_prevent_position = () => {
+
+
+
+  }
+
 
 </script>
