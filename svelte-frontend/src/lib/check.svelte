@@ -32,29 +32,42 @@
 
     
     for(let i = -1; i > -8; i--) {
-      if(check_position("Rook",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y}) == false) break;
+      let r = check_position("Rook",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y});
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y}) == false) break;
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y});
+
+      if(!q && !r) {
+        break
+      }
     }
     for(let i = 1; i < 8; i++) {
-      if(check_position("Rook",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y}) == false) break;
+      let r = check_position("Rook",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y})
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y}) == false) break;
-
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y})
+      
+      if(!q && !r) {
+        break
+      }
     }
 
     for(let i = -1; i > -8; i--) {
-      if(check_position("Rook",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i}) == false) break;
+      let r = check_position("Rook",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i})
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i}) == false) break;
-
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i})
+  
+      if(!q && !r) {
+        break
+      }
     }
 
     for(let i = 1; i < 8; i++) {
-      if(check_position("Rook",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i}) == false) break;
+      let r = check_position("Rook",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i})
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i}) == false) break;
-
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x, y: position.y + i})
+      
+      if(!q && !r) {
+        break
+      }
     }
 
     
@@ -64,29 +77,42 @@
 
 
     for(let i = -1; i > -8; i--) {
-      if(check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i}) == false) break;
+      let b = check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i})
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i}) == false) break;
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i})
+
+      if(!q && !b) {
+        break
+      }
     }
     for(let i = 1; i < 8; i++) {
-      if(check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i}) == false) break;
+      let b = check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i})
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i}) == false) break;
-
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x + i, y: position.y + i}) 
+      
+      if(!q && !b) {
+        break
+      }
     }
 
     for(let i = -1; i > -8; i--) {
-      if(check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i}) == false) break;
+      let b = check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i})
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i}) == false) break;
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i}) 
+
+      if(!q && !b) {
+        break
+      }
 
     }
 
     for(let i = 1; i < 8; i++) {
-      if(check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i}) == false) break;
+      let b = check_position("Bishop",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i})
 
-      if(check_position("Queen",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i}) == false) break;
-
+      let q = check_position("Queen",  own_team, enemy_team, field_array, {x: position.x - i, y: position.y + i})
+      if(!q && !b) {
+        break
+      }
     }
 
 
