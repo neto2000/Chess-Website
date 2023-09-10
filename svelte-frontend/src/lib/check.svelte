@@ -150,9 +150,78 @@
 
   }
 
-  export const get_check_prevent_position = () => {
+  export const get_check_prevent_position = (king_position) => {
+
+    let prevent_position = []
+
+    for (let i = 0; i < check_list.length; i++) {
+      prevent_position.push(check_list[i].pos)
+
+      if (check_list[i].type == "Queen" || check_list[i].type == "Rook" || check_list[i].type == "Bishop") {
+        
+        // vertical
+        if (check_list[i].pos.x == king_position.x) {
+          
+          if (check_list[i].pos.y > king_position.y) {
+            for (let y_pos = king_position.y + 1; y_pos < check_list[i].pos.y; y_pos++) {
+              prevent_position.push({x: king_position.x, y: y_pos})                                                             
+            }
+          }
+          else {
+            for (let y_pos = check_list[i].pos.y + 1; y_pos < king_position.y; y_pos++) {
+              prevent_position.push({x: king_position.x, y: y_pos})                                                             
+            }
+          }
+
+          continue
+        }
+        // horizontal
+        if (check_list[i].pos.y == king_position.y) {
+          
+          if (check_list[i].pos.x > king_position.x) {
+            for (let x_pos = king_position.x + 1; x_pos < check_list[i].pos.x; x_pos++) {
+              prevent_position.push({y: king_position.y, x: x_pos})                                                             
+            }
+          }
+          else {
+            for (let x_pos = check_list[i].pos.x + 1; x_pos < king_position.x; x_pos++) {
+              prevent_position.push({y: king_position.y, x: x_pos})                                                             
+            }
+          }
 
 
+          continue
+        }
+        
+        //diagonal
+        
+        if (check_list[i].pos.y > king_position.y && check_list[i].pos.x > king_position.x) {
+          for(let diff = 1; king_position.x + diff < check_list[i].pos.x; diff++) {
+            prevent_position.push({x: king_position.x + diff, y: king_position.y + diff})
+          }
+        }
+        if (check_list[i].pos.y < king_position.y && check_list[i].pos.x < king_position.x) {
+          for(let diff = 1; diff + check_list[i].pos.x < king_position.x; diff++) {
+            prevent_position.push({x: check_list[i].pos.x + diff, y: check_list[i].pos.y + diff})
+          }
+        }
+        if (check_list[i].pos.y > king_position.y && check_list[i].pos.x < king_position.x) {
+          for(let diff = 1; diff + check_list[i].pos.x < king_position.x; diff++) {
+            prevent_position.push({x: king_position.x - diff, y: king_position.y + diff})
+          }
+        }
+        if (check_list[i].pos.y < king_position.y && check_list[i].pos.x > king_position.x) {
+          for(let diff = 1; king_position.x + diff < check_list[i].pos.x; diff++) {
+            prevent_position.push({x: king_position.x + diff, y: king_position.y - diff})
+          }
+        }
+
+
+      }
+      
+    }
+
+    console.log(prevent_position)
 
   }
 

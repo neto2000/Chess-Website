@@ -66,6 +66,8 @@
 
 <button on:click={() => check_comp.check_check(fields, {x: 4, y: 4}, own_team, enemy_team)}>Check</button>
 
+<button on:click={() => check_comp.get_check_prevent_position({x: 4, y: 4})}>Prevent Pos</button>
+
 <br>
 
 <p>Y</p>
