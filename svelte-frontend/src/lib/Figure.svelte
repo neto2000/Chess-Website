@@ -1,5 +1,7 @@
 <script>
   
+  import Check from "./check.svelte";
+
   export let type;
 
   export let team;
@@ -18,7 +20,11 @@
 
   export let enemy_team;
 
+  export let prevent_positions;
+
   let clicked = false;
+
+  let check_comp;
 
 
   $: image_path = "/images/" + team + "-pixel/";
@@ -57,6 +63,17 @@
 
     }
   }
+
+  function check(offset_y, offset_x) {
+    check_comp.check_check(field_array, {y: position.y + offset_y, x: position.x + offset_x}, own_team, enemy_team)
+
+    if(check_comp.check_list[0]) {
+      return true
+    }
+
+    return false
+  }
+
   function show_highlight() {
 
     console.log("show highlight")
@@ -64,14 +81,15 @@
     if(type == "King") {
       
       for(let i = -1; i<2; i++) {
-        place_highlight(-1, i)
+         
+        if(!check(-1, i)) place_highlight(-1, i);
       }
 
-      place_highlight(0, -1)
-      place_highlight(0, 1)
+      if(!check(0, -1))place_highlight(0, -1)
+      if(!check(-1, 1))place_highlight(0, 1)
 
       for(let i = -1; i<2; i++) {
-        place_highlight(1, i)
+        if(!check(1, i)) place_highlight(1, i)
       }
 
     }
@@ -335,7 +353,10 @@
 
 
   function place_highlight(offset_y, offset_x) {
+   
+
     
+
     console.log("PLACE " + offset_y + " " + offset_x)
 
     if(position.y + offset_y >= 0 && position.y + offset_y <= 7 && position.x + offset_x >= 0 && position.x + offset_x <= 7) {
@@ -344,7 +365,24 @@
         console.log("own team!")
         return false
       }
+     
+      let on_prevent = false
 
+      if(prevent_positions < 1) {
+        on_prevent = true
+      }
+
+      for(let i = 0; i < prevent_positions.length; i++) {
+        if (prevent_positions[i].y == position.y + offset_y && prevent_positions[i].x + offset_x) {
+          on_prevent = true
+
+          break;
+        } 
+      }
+
+      if(!on_prevent) {
+        return false
+      }
 
       field_array[position.y + offset_y][position.x + offset_x].is_highlight = true;
       field_array[position.y + offset_y][position.x + offset_x].origin = position;
@@ -408,6 +446,7 @@
 
 
 <button class="figure-button" on:click={button_clicked}>
+  <Check bind:this={check_comp}/>
   <img class="figure-image" src={image_path + type + ".png"} alt=""> 
 </button>
 

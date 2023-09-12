@@ -14,6 +14,8 @@
    - [ ] implement checkmate and game over
     - [ ] Gameover if no figure is able to move
 
+   - [ ] implement written tests to test complicated movement (in Debug.svelte)
+
    - [ ] create Game Full Screen
    - [ ] create Gameover Screen
    
