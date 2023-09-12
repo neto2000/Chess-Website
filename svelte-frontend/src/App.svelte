@@ -1,8 +1,10 @@
 <script>
     import Figure from './lib/Figure.svelte'
     import Highlight from './lib/Highlight.svelte'
+
+    import Check from './lib/check.svelte';
+
     
-    import { onMount } from 'svelte';
     import WS from './ws.js'
 
 
@@ -13,6 +15,10 @@
 
     let own_team;
     let enemy_team;
+
+    let king_position = {x: 0, y: 0}
+
+    let check_comp;
 
     $: response = $raw_response.toString()
 
@@ -57,6 +63,14 @@
                 fields[turn_dict.old_pos.y][turn_dict.old_pos.x].move_to = {bool: true, pos: turn_dict.new_pos}
 
                 fields = fields
+
+
+                check_comp.check_check(fields, king_position, own_team, enemy_team)
+
+                if(check_comp.check_list[0] == false) {
+                    check_comp.get_check_prevent_positions(king_position)
+                }
+
             }
         }
     }
@@ -75,6 +89,9 @@
         
         console.log("moved")
 
+        if(fields[moved.new_pos.y][moved.new_pos.y].figure == "King") {
+            king_position = moved.new_pos
+        }
 
         let turn_dict = JSON.stringify({team: own_team,old_pos: {y: Math.abs(moved.old_pos.y - 7), x: Math.abs(moved.old_pos.x - 7)}, new_pos: {y: Math.abs(moved.new_pos.y - 7), x: Math.abs(moved.new_pos.x - 7)}})
 
@@ -167,6 +184,8 @@
 </script>
 
 <main>
+
+  <Check bind:this={check_comp} />
 
   <div class="board-container">
     <div class="chess-board">

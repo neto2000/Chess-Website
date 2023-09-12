@@ -1,12 +1,14 @@
 <script>
 
-  let check_list = [false]
+  export let check_list = [false]
+
+  export let prevent_positions = []
 
 
 
   export const check_check = (field_array,position ,own_team, enemy_team) => {
 
-  
+    check_list = [false] 
 
     check_position("Pawn", own_team, enemy_team, field_array, {x: position.x -1, y: position.y -1})
 
@@ -248,6 +250,8 @@
     }
 
     console.log(prevent_position)
+
+    prevent_positions = prevent_position
 
   }
 

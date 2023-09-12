@@ -49,9 +49,7 @@
 
     }
 
-    function check() {
- //       check_check(fields, {x: 5, y: 4}, enemy_team, own_team);
-    }
+
 
 
 </script>
