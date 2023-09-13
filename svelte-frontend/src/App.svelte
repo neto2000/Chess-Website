@@ -19,6 +19,8 @@
     let king_position = {x: 0, y: 0}
 
     let check_comp;
+    let prevent_positions;
+    let check_list;
 
     $: response = $raw_response.toString()
 
@@ -54,22 +56,25 @@
             
             let turn_dict = JSON.parse(up_response);
 
-            console.log("move enemy")
 
             if(own_team != turn_dict.team) {
 
-                console.log(turn_dict);
+                console.log("PLACE ENEMY" + own_team)
+
+                if(current_team == "white"){
+                    current_team = "black";
+                }
+                else if(current_team == "black"){
+                    current_team = "white";
+                }   
 
                 fields[turn_dict.old_pos.y][turn_dict.old_pos.x].move_to = {bool: true, pos: turn_dict.new_pos}
 
-                fields = fields
+                fields = fields;
 
 
-                check_comp.check_check(fields, king_position, own_team, enemy_team)
-
-                if(check_comp.check_list[0] == false) {
-                    check_comp.get_check_prevent_positions(king_position)
-                }
+                
+                
 
             }
         }
@@ -87,25 +92,44 @@
 
     $: if(moved.bool) {
         
-        console.log("moved")
 
-        if(fields[moved.new_pos.y][moved.new_pos.y].figure == "King") {
+        if(fields[moved.new_pos.y][moved.new_pos.x].figure == "King" && fields[moved.new_pos.y][moved.new_pos.x].team == own_team) {
             king_position = moved.new_pos
         }
 
-        let turn_dict = JSON.stringify({team: own_team,old_pos: {y: Math.abs(moved.old_pos.y - 7), x: Math.abs(moved.old_pos.x - 7)}, new_pos: {y: Math.abs(moved.new_pos.y - 7), x: Math.abs(moved.new_pos.x - 7)}})
+        
+        if(fields[moved.new_pos.y][moved.new_pos.x].team == enemy_team) {
+        
+            check_comp.check_check(fields, king_position, own_team, enemy_team);
 
-        send(turn_dict);
+            if(check_list[0]) {
+                console.log("get prevent pos")
+                check_comp.get_check_prevent_position(king_position);
 
+                console.log(prevent_positions)
+            }
 
-        if(current_team == "white"){
-            current_team = "black";
+            moved.bool = false
+
         }
-        else if(current_team == "black"){
-            current_team = "white";
-        }
 
-        moved.bool = false
+        if(fields[moved.new_pos.y][moved.new_pos.x].team == own_team) {
+            
+        
+            let turn_dict = JSON.stringify({team: own_team,old_pos: {y: Math.abs(moved.old_pos.y - 7), x: Math.abs(moved.old_pos.x - 7)}, new_pos: {y: Math.abs(moved.new_pos.y - 7), x: Math.abs(moved.new_pos.x - 7)}})
+
+            send(turn_dict);
+
+
+            if(current_team == "white"){
+                current_team = "black";
+            }
+            else if(current_team == "black"){
+                current_team = "white";
+            }
+
+            moved.bool = false
+        }
     }
 
 
@@ -185,7 +209,7 @@
 
 <main>
 
-  <Check bind:this={check_comp} />
+  <Check bind:this={check_comp} bind:prevent_position={prevent_positions} bind:check_list={check_list}/>
 
   <div class="board-container">
     <div class="chess-board">
@@ -222,7 +246,8 @@
                                         move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                         bind:moved={moved}
                                         own_team={own_team}
-                                        enemy_team={enemy_team}/>
+                                        enemy_team={enemy_team}
+                                        prevent_positions={prevent_positions}/>
 
 
 
@@ -236,7 +261,8 @@
                                     move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                     bind:moved={moved}
                                     own_team={own_team}
-                                    enemy_team={enemy_team}/>
+                                    enemy_team={enemy_team}
+                                    prevent_positions={prevent_positions}/>
                     
 
                     {/if}
@@ -276,7 +302,8 @@
                                         move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                         bind:moved={moved}
                                         own_team={own_team}
-                                        enemy_team={enemy_team}/>
+                                        enemy_team={enemy_team}
+                                        prevent_positions={prevent_positions}/>
 
 
 
@@ -290,7 +317,8 @@
                                     move_to={fields[Math.floor(i / 8)][i % 8].move_to}
                                     bind:moved={moved}
                                     own_team={own_team}
-                                    enemy_team={enemy_team}/>
+                                    enemy_team={enemy_team}
+                                    prevent_positions={prevent_positions}/>
                     
 
                     {/if}

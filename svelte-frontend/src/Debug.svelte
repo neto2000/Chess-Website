@@ -21,7 +21,7 @@
         }
     }
 
-    fields[4][4] = {figure: "King", team: own_team, move_to: {bool: false}, is_highlight: false, origin_pos: false}
+    fields[6][4] = {figure: "King", team: own_team, move_to: {bool: false}, is_highlight: false, origin_pos: false}
 
     fields = fields;
 
@@ -62,9 +62,9 @@
 
 <button on:click={place_figure}>Place</button>
 
-<button on:click={() => check_comp.check_check(fields, {x: 4, y: 4}, own_team, enemy_team)}>Check</button>
+<button on:click={() => check_comp.check_check(fields, {x: 4, y: 6}, own_team, enemy_team)}>Check</button>
 
-<button on:click={() => check_comp.get_check_prevent_position({x: 4, y: 4})}>Prevent Pos</button>
+<button on:click={() => check_comp.get_check_prevent_position({x: 4, y: 6})}>Prevent Pos</button>
 
 <br>
 

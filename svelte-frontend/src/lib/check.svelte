@@ -2,13 +2,15 @@
 
   export let check_list = [false]
 
-  export let prevent_positions = []
+  export let prevent_position = []
 
 
 
   export const check_check = (field_array,position ,own_team, enemy_team) => {
 
     check_list = [false] 
+
+    console.log("CHECK CHECK")
 
     check_position("Pawn", own_team, enemy_team, field_array, {x: position.x -1, y: position.y -1})
 
@@ -141,7 +143,7 @@
 
     if(position.y < 0 || position.y > 7 || position.x < 0 || position.x > 7) {
       
-      console.log("over borders!")
+      console.log("check: over borders!")
 
       return false
     }
@@ -150,7 +152,7 @@
 
     if(field_array[position.y][position.x].team == own_team) {
 
-      console.log("own team!")
+      console.log("check: own team!")
 
       return false
     }
@@ -180,7 +182,7 @@
 
   export const get_check_prevent_position = (king_position) => {
 
-    let prevent_position = []
+    prevent_position = []
 
     for (let i = 0; i < check_list.length; i++) {
       prevent_position.push(check_list[i].pos)
@@ -251,7 +253,7 @@
 
     console.log(prevent_position)
 
-    prevent_positions = prevent_position
+    //prevent_positions = prevent_position
 
   }
 

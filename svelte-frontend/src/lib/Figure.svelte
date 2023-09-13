@@ -25,6 +25,7 @@
   let clicked = false;
 
   let check_comp;
+  let check_list;
 
 
   $: image_path = "/images/" + team + "-pixel/";
@@ -65,9 +66,9 @@
   }
 
   function check(offset_y, offset_x) {
-    check_comp.check_check(field_array, {y: position.y + offset_y, x: position.x + offset_x}, own_team, enemy_team)
+    check_comp.check_check(field_array, {y: position.y + offset_y, x: position.x + offset_x}, own_team, enemy_team);
 
-    if(check_comp.check_list[0]) {
+    if(check_list[0]) {
       return true
     }
 
@@ -76,7 +77,6 @@
 
   function show_highlight() {
 
-    console.log("show highlight")
 
     if(type == "King") {
       
@@ -362,18 +362,23 @@
     if(position.y + offset_y >= 0 && position.y + offset_y <= 7 && position.x + offset_x >= 0 && position.x + offset_x <= 7) {
 
       if(field_array[position.y + offset_y][position.x + offset_x].team == team) {
-        console.log("own team!")
+        //console.log("own team!")
         return false
       }
      
       let on_prevent = false
 
-      if(prevent_positions < 1) {
+      if(prevent_positions.length < 1) {
+        console.log("no prevent positions")
+
         on_prevent = true
       }
 
-      for(let i = 0; i < prevent_positions.length; i++) {
-        if (prevent_positions[i].y == position.y + offset_y && prevent_positions[i].x + offset_x) {
+      for(let i = 1; i < prevent_positions.length; i++) {
+        if (prevent_positions[i].y == position.y + offset_y && prevent_positions[i].x == position.x + offset_x) {
+
+          console.log(prevent_positions[i])
+
           on_prevent = true
 
           break;
@@ -401,7 +406,7 @@
       return true;
     }
     else {
-      console.log("out of bounds!")
+      //console.log("out of bounds!")
       return false;
     }
   }
@@ -446,7 +451,7 @@
 
 
 <button class="figure-button" on:click={button_clicked}>
-  <Check bind:this={check_comp}/>
+  <Check bind:this={check_comp} bind:check_list={check_list} />
   <img class="figure-image" src={image_path + type + ".png"} alt=""> 
 </button>
 
