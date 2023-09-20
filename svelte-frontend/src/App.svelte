@@ -159,9 +159,16 @@
         fields[7][2] = {figure: "Bishop", team: color, move_to: {bool:false}, origin_pos: true}
         fields[7][5] = {figure: "Bishop", team: color, move_to: {bool:false}, origin_pos: true}
 
-        fields[7][3] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
-        fields[7][4] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
+        if (color == "white") {
+            fields[7][3] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
+            fields[7][4] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
 
+        }
+        else {
+            fields[7][4] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
+            fields[7][3] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
+
+        }
     }
 
     function set_enemy_figures(color) {
@@ -179,11 +186,17 @@
         fields[0][5] = {figure: "Bishop", team: color, move_to: {bool:false}, origin_pos: true}
 
 
+        if (color == "black") {
+            fields[0][3] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
+            fields[0][4] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
+
+        }
+        else {
+            fields[0][4] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
+            fields[0][3] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
+
+        }
         
-        fields[0][3] = {figure: "Queen", team: color, move_to: {bool:false}, origin_pos: true}
-        fields[0][4] = {figure: "King", team: color, move_to: {bool:false}, origin_pos: true}
-
-
     }
 
 

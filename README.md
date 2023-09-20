@@ -13,7 +13,7 @@
 
    - [ ] king movement does not be affected by prevent positions
 
-   - [ ] Queen/King start placement are not the same on both colors 
+   - [x] Queen/King start placement are not the same on both colors 
 
    - [x] implement check (integrate check.svelte in App.svelte)
 
