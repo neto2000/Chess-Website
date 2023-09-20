@@ -22,6 +22,8 @@
 
   export let prevent_positions;
 
+  export let highlight_active;
+
   let clicked = false;
 
   let check_comp;
@@ -60,7 +62,9 @@
 
     }
     else {
-      show_highlight();
+      if(!highlight_active) {
+        show_highlight();
+      }
 
     }
   }
@@ -395,6 +399,8 @@
 
       clicked = true;
 
+      highlight_active = true;
+
       
       // check if highlight is on enemy figure and then return false, so you cant hop over figures
       if(field_array[position.y + offset_y][position.x + offset_x].team == enemy_team) {
@@ -424,6 +430,8 @@
 
 
       clicked = false;
+
+      highlight_active = false;
 
       // check if highlight is on enemy figure and then return false, so you cant hop over figures
       if(field_array[position.y + offset_y][position.x + offset_x].team == enemy_team) {

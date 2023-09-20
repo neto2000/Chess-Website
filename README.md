@@ -9,7 +9,7 @@
    - [x] implement turn system with websocket
    - [x] compute each position a figure can move to and place a highlight (maybe in extra file)
 
-   - [ ] only show highlights of current figure (delete the other ones)
+   - [x] only show highlights of current figure (delete the other ones)
 
    - [ ] king movement does not be affected by prevent positions
 

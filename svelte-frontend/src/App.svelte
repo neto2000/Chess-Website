@@ -22,6 +22,8 @@
     let prevent_positions;
     let check_list;
 
+    let highlight_active = false;
+
     $: response = $raw_response.toString()
 
     $: check_messages(response);
@@ -260,7 +262,8 @@
                                         bind:moved={moved}
                                         own_team={own_team}
                                         enemy_team={enemy_team}
-                                        prevent_positions={prevent_positions}/>
+                                        prevent_positions={prevent_positions}
+                                        bind:highlight_active={highlight_active}/>
 
 
 
@@ -275,7 +278,8 @@
                                     bind:moved={moved}
                                     own_team={own_team}
                                     enemy_team={enemy_team}
-                                    prevent_positions={prevent_positions}/>
+                                    prevent_positions={prevent_positions}
+                                    bind:highlight_active={highlight_active}/>
                     
 
                     {/if}
@@ -316,7 +320,8 @@
                                         bind:moved={moved}
                                         own_team={own_team}
                                         enemy_team={enemy_team}
-                                        prevent_positions={prevent_positions}/>
+                                        prevent_positions={prevent_positions}
+                                        bind:highlight_active={highlight_active}/>
 
 
 
@@ -331,7 +336,8 @@
                                     bind:moved={moved}
                                     own_team={own_team}
                                     enemy_team={enemy_team}
-                                    prevent_positions={prevent_positions}/>
+                                    prevent_positions={prevent_positions}
+                                    bind:highlight_active={highlight_active}/>
                     
 
                     {/if}
